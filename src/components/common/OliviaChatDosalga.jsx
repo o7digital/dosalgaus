@@ -4,6 +4,7 @@ import { useRouter } from "next/router";
 const SITE_CODE = "dosalga";
 const LEAD_ENDPOINT = "https://www.o7digital.com/api/o7-lead";
 const CHAT_ENDPOINT = "https://www.o7digital.com/api/o7-chat";
+const OFFLINE = true;
 
 const COPY = {
   es: {
@@ -144,9 +145,14 @@ export default function OliviaChatDosalga() {
   const [isLoading, setIsLoading] = useState(false);
   const [leadSent, setLeadSent] = useState(false);
   const [lead, setLead] = useState({ firstName: "", lastName: "", email: "", phone: "" });
-  const [messages, setMessages] = useState([{ role: "assistant", content: copy.welcome }]);
+  const [messages, setMessages] = useState(
+    OFFLINE
+      ? [{ role: "assistant", content: "Offline" }, { role: "assistant", content: "Add more credit" }]
+      : [{ role: "assistant", content: copy.welcome }]
+  );
 
   useEffect(() => {
+    if (OFFLINE) return;
     setMessages((prev) => {
       if (prev.length !== 1 || prev[0]?.role !== "assistant") return prev;
       return [{ role: "assistant", content: copy.welcome }];
@@ -157,6 +163,7 @@ export default function OliviaChatDosalga() {
 
   const submitLead = async (event) => {
     event.preventDefault();
+    if (OFFLINE) return;
     if (!lead.firstName.trim() || !lead.lastName.trim() || !lead.email.trim() || !lead.phone.trim() || isLoading) return;
 
     setIsLoading(true);
@@ -186,6 +193,7 @@ export default function OliviaChatDosalga() {
   };
 
   const sendMessage = async () => {
+    if (OFFLINE) return;
     const message = input.trim();
     if (!message || isLoading || !leadSent) return;
     const messageLanguage = detectMessageLanguage(message, language);
@@ -216,7 +224,7 @@ export default function OliviaChatDosalga() {
           <header className="olivia-dosalga-header">
             <div>
               <p className="olivia-dosalga-title">{copy.title}</p>
-              <p className="olivia-dosalga-status">{copy.status} · {copy.online}</p>
+              <p className="olivia-dosalga-status">{OFFLINE ? "Offline · Add more credit" : `${copy.status} · ${copy.online}`}</p>
             </div>
             <button type="button" className="olivia-dosalga-close" onClick={() => setIsOpen(false)} aria-label={copy.close}>x</button>
           </header>
@@ -228,7 +236,7 @@ export default function OliviaChatDosalga() {
             {isLoading && <div className="olivia-dosalga-message assistant">...</div>}
           </div>
 
-          {!leadSent && (
+          {!OFFLINE && !leadSent && (
             <form className="olivia-dosalga-lead" onSubmit={submitLead}>
               <p>{copy.leadIntro}</p>
               <input required placeholder={copy.firstName} value={lead.firstName} onChange={(e) => setLead((p) => ({ ...p, firstName: e.target.value }))} />
@@ -240,8 +248,8 @@ export default function OliviaChatDosalga() {
           )}
 
           <div className="olivia-dosalga-composer">
-            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }} disabled={!leadSent || isLoading} placeholder={copy.placeholder} />
-            <button type="button" onClick={sendMessage} disabled={isLoading || !leadSent} aria-label={copy.send}>{">"}</button>
+            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }} disabled={OFFLINE || !leadSent || isLoading} placeholder={OFFLINE ? "Offline — Add more credit" : copy.placeholder} />
+            <button type="button" onClick={sendMessage} disabled={OFFLINE || isLoading || !leadSent} aria-label={copy.send}>{">"}</button>
           </div>
         </section>
       )}
@@ -250,7 +258,7 @@ export default function OliviaChatDosalga() {
         {!isOpen && (
           <button type="button" className="olivia-dosalga-teaser" onClick={() => setIsOpen(true)}>
             <span className="olivia-dosalga-avatar">O</span>
-            <span>{copy.teaser}</span>
+            <span>{OFFLINE ? "Offline — Add more credit" : copy.teaser}</span>
           </button>
         )}
         <button type="button" className="olivia-dosalga-toggle" onClick={() => setIsOpen((v) => !v)} aria-label={isOpen ? copy.close : copy.open}>
