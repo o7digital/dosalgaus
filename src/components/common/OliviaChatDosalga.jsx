@@ -147,7 +147,7 @@ export default function OliviaChatDosalga() {
   const [lead, setLead] = useState({ firstName: "", lastName: "", email: "", phone: "" });
   const [messages, setMessages] = useState(
     OFFLINE
-      ? [{ role: "assistant", content: "Offline" }, { role: "assistant", content: "Add more credit" }]
+      ? [{ role: "assistant", content: "Offline" }]
       : [{ role: "assistant", content: copy.welcome }]
   );
 
@@ -224,7 +224,7 @@ export default function OliviaChatDosalga() {
           <header className="olivia-dosalga-header">
             <div>
               <p className="olivia-dosalga-title">{copy.title}</p>
-              <p className="olivia-dosalga-status">{OFFLINE ? "Offline · Add more credit" : `${copy.status} · ${copy.online}`}</p>
+              <p className="olivia-dosalga-status">{OFFLINE ? "Offline" : `${copy.status} · ${copy.online}`}</p>
             </div>
             <button type="button" className="olivia-dosalga-close" onClick={() => setIsOpen(false)} aria-label={copy.close}>x</button>
           </header>
@@ -248,7 +248,7 @@ export default function OliviaChatDosalga() {
           )}
 
           <div className="olivia-dosalga-composer">
-            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }} disabled={OFFLINE || !leadSent || isLoading} placeholder={OFFLINE ? "Offline — Add more credit" : copy.placeholder} />
+            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }} disabled={OFFLINE || !leadSent || isLoading} placeholder={OFFLINE ? "Offline" : copy.placeholder} />
             <button type="button" onClick={sendMessage} disabled={OFFLINE || isLoading || !leadSent} aria-label={copy.send}>{">"}</button>
           </div>
         </section>
@@ -258,7 +258,7 @@ export default function OliviaChatDosalga() {
         {!isOpen && (
           <button type="button" className="olivia-dosalga-teaser" onClick={() => setIsOpen(true)}>
             <span className="olivia-dosalga-avatar">O</span>
-            <span>{OFFLINE ? "Offline — Add more credit" : copy.teaser}</span>
+            <span>{OFFLINE ? "Offline" : copy.teaser}</span>
           </button>
         )}
         <button type="button" className="olivia-dosalga-toggle" onClick={() => setIsOpen((v) => !v)} aria-label={isOpen ? copy.close : copy.open}>
