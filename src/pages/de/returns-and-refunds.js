@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const ReturnsAndRefundsDePage = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://dosalga.store";
   const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
   const slugByLocale = { en: '/returns-and-refunds', es: '/returns-and-refunds', de: '/returns-and-refunds', fr: '/returns-and-refunds', it: '/returns-and-refunds', pt: '/returns-and-refunds' };
   const currentLocale = 'de';

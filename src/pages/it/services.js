@@ -3,7 +3,7 @@ import Head from "next/head";
 import Link from "next/link";
 
 const ServicesPageIt = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://dosalga.store";
   const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
   const slugByLocale = { en: '/services', es: '/services', de: '/services', fr: '/services', it: '/services', pt: '/services' };
   const currentLocale = 'it';

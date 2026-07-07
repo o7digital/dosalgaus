@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const TaxesAndDutiesPage = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://dosalga.store";
   const locales = ['en', 'es'];
   const slugByLocale = {
     en: '/taxes-and-duties',
@@ -19,10 +19,10 @@ const TaxesAndDutiesPage = () => {
   return (
     <>
       <Head>
-        <title>Taxes &amp; Duties | Dosalga</title>
+        <title>Sales Tax &amp; Duties | Dosalga</title>
         <meta
           name="description"
-          content="Taxes & Import Duties policy for Dosalga orders, including potential customs fees, VAT, and details for United States and Mexico deliveries."
+          content="Sales tax, import duties, tariffs, and customs fees policy for Dosalga orders shipped to customers in the United States."
         />
         <link rel="canonical" href={hrefFor(currentLocale)} />
         {locales.map((locale) => (
@@ -32,10 +32,10 @@ const TaxesAndDutiesPage = () => {
         <meta property="og:locale" content={ogLocale} />
         <meta property="og:type" content="website" />
         <meta property="og:url" content={hrefFor(currentLocale)} />
-        <meta property="og:title" content="Taxes & Import Duties | Dosalga" />
+        <meta property="og:title" content="Sales Tax & Import Duties | Dosalga" />
         <meta
           property="og:description"
-          content="Review Dosalga's Taxes & Import Duties policy for international orders, including United States and Mexico deliveries."
+          content="Review Dosalga's sales tax, import duties, tariffs, and customs fees policy for U.S. orders."
         />
         <meta property="og:site_name" content="Dosalga" />
         <meta property="og:image" content={ogImage} />
@@ -47,35 +47,33 @@ const TaxesAndDutiesPage = () => {
           <div className="row">
             <div className="col-lg-12">
               <div className="privacy-content">
-                <h1 className="mb-4">Taxes &amp; Duties</h1>
+                <h1 className="mb-4">Sales Tax &amp; Duties</h1>
 
                 <div className="policy-section mt-5">
-                  <h2>Taxes &amp; Import Duties</h2>
+                  <h2>U.S. Sales Tax</h2>
                   <p>
-                    Dosalga operates as an international online retailer. All products are shipped directly from international
-                    fulfillment partners.
+                    Dosalga sells to customers in the United States through an online storefront. U.S. sales tax is different from
+                    VAT and may apply depending on the customer's shipping address, applicable state and local rules, and any tax
+                    collection obligations that apply at the time of purchase.
                   </p>
                   <p>
-                    Depending on the destination country, orders may be subject to import duties, customs fees, or local taxes such
-                    as VAT. These charges are not included in the product price unless explicitly stated and are the sole
-                    responsibility of the customer.
-                  </p>
-                  <p>Dosalga has no control over these charges and cannot predict their amount.</p>
-                </div>
-
-                <div className="policy-section mt-5">
-                  <h2>United States Orders</h2>
-                  <p>
-                    Orders shipped to the United States are not subject to U.S. sales tax unless otherwise required by law. Dosalga
-                    does not operate offices, warehouses, or inventory within the United States.
+                    If sales tax is collected at checkout, it will be shown before the order is confirmed. If no sales tax is
+                    collected at checkout, the customer may still be responsible for any applicable use tax or similar tax required
+                    by their state or local jurisdiction.
                   </p>
                 </div>
 
                 <div className="policy-section mt-5">
-                  <h2>Mexico Orders</h2>
+                  <h2>Import Duties, Tariffs &amp; Customs Fees</h2>
                   <p>
-                    Orders delivered to Mexico may be subject to import taxes or VAT assessed by customs authorities or carriers upon
-                    delivery. These charges are payable by the customer.
+                    Some products may ship from international fulfillment partners. Orders imported into the United States may be
+                    subject to customs duties, tariffs, carrier brokerage fees, or other import-related charges assessed by U.S.
+                    Customs and Border Protection, carriers, or other authorities.
+                  </p>
+                  <p>
+                    Unless expressly stated at checkout, these charges are not included in the product price or shipping fee and
+                    remain the customer's responsibility. Dosalga does not control these charges and cannot guarantee their amount
+                    before customs processing.
                   </p>
                 </div>
               </div>

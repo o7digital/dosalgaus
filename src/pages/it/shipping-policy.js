@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const ShippingPolicyItPage = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://dosalga.store";
   const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
   const slugByLocale = { en: '/shipping-policy', es: '/shipping-policy', de: '/shipping-policy', fr: '/shipping-policy', it: '/shipping-policy', pt: '/shipping-policy' };
   const currentLocale = 'it';

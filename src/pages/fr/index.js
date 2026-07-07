@@ -5,7 +5,7 @@ import VideoSection from "../../components/home-uomo/VideoSection";
 import TrendingNow from "../../components/home-uomo/TrendingNow";
 
 export default function HomeFr() {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://dosalga.store";
   const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
   const currentLocale = 'fr';
   const hrefFor = (locale) => `${siteUrl}${locale === 'en' ? '' : `/${locale}`}`;

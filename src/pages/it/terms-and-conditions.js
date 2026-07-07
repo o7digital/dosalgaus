@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const TermsAndConditionsItPage = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://dosalga.store";
   const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
   const slugByLocale = { en: '/terms-and-conditions', es: '/terms-and-conditions', de: '/terms-and-conditions', fr: '/terms-and-conditions', it: '/terms-and-conditions', pt: '/terms-and-conditions' };
   const currentLocale = 'it';

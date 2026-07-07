@@ -14,7 +14,8 @@ const PrivacyPolicy = () => {
                   <h2>1. Company Information</h2>
                   <p>
                     This Privacy Policy is issued by <strong>DOSALGA</strong> (hereinafter "DOSALGA", "we", "us", or "our"), 
-                    a company incorporated under the laws of Mexico, committed to protecting your personal data and privacy rights.
+                    an online retail brand serving customers in the United States and other eligible destinations, committed to
+                    protecting your personal data and privacy rights.
                   </p>
                   <p>
                     For any questions or concerns regarding this Privacy Policy, please contact us at:
@@ -101,16 +102,18 @@ const PrivacyPolicy = () => {
                 <div className="policy-section mt-5">
                   <h2>6. Your Privacy Rights</h2>
                   
-                  <h3 className="mt-4">6.1 ARCO Rights (Mexico - LFPDPPP)</h3>
-                  <p>Under Mexican Federal Law on Protection of Personal Data Held by Private Parties, you have the following ARCO rights:</p>
+                  <h3 className="mt-4">6.1 U.S. Privacy Rights</h3>
+                  <p>For residents of certain U.S. states, you may have additional rights under applicable privacy laws:</p>
                   <ul>
-                    <li><strong>Access (Acceso):</strong> Request access to your personal data we hold</li>
-                    <li><strong>Rectification (Rectificación):</strong> Request correction of inaccurate or incomplete data</li>
-                    <li><strong>Cancellation (Cancelación):</strong> Request deletion of your personal data</li>
-                    <li><strong>Opposition (Oposición):</strong> Object to the processing of your personal data</li>
+                    <li>Right to know what personal information is collected</li>
+                    <li>Right to access or request a copy of personal information</li>
+                    <li>Right to delete personal information, subject to legal exceptions</li>
+                    <li>Right to correct inaccurate information</li>
+                    <li>Right to opt out of sale or sharing of personal information, where applicable</li>
+                    <li>Right to non-discrimination for exercising privacy rights</li>
                   </ul>
                   <p>
-                    To exercise your ARCO rights, please submit a written request to our Privacy Officer at the contact information provided above.
+                    To exercise your privacy rights, please submit a request using the contact information provided in this policy.
                   </p>
 
                   <h3 className="mt-4">6.2 GDPR Rights (European Union)</h3>
@@ -125,15 +128,11 @@ const PrivacyPolicy = () => {
                     <li><strong>Right to Withdraw Consent:</strong> Withdraw consent at any time</li>
                   </ul>
 
-                  <h3 className="mt-4">6.3 U.S. Privacy Rights</h3>
-                  <p>For residents of certain U.S. states (including California, Virginia, Colorado), you may have additional rights:</p>
-                  <ul>
-                    <li>Right to know what personal information is collected</li>
-                    <li>Right to delete personal information</li>
-                    <li>Right to opt-out of sale or sharing of personal information</li>
-                    <li>Right to correct inaccurate information</li>
-                    <li>Right to non-discrimination for exercising privacy rights</li>
-                  </ul>
+                  <h3 className="mt-4">6.3 Other Local Privacy Rights</h3>
+                  <p>
+                    Depending on your country or region, you may have additional rights under local privacy laws. We will respond to
+                    valid privacy requests as required by applicable law.
+                  </p>
                 </div>
 
                 <div className="policy-section mt-5">
@@ -244,7 +243,7 @@ const PrivacyPolicy = () => {
                     If you have questions, concerns, or wish to exercise your privacy rights, please contact us:
                   </p>
                   <div className="contact-info mt-3">
-                    <p><strong>DOSALGA SA DE CV</strong></p>
+                    <p><strong>DOSALGA</strong></p>
                     <p><strong>Phone:</strong> 2-965-871-8617</p>
                     <p><strong>Email:</strong> info@dosalga.store</p>
                   </div>
@@ -268,10 +267,10 @@ const PrivacyPolicy = () => {
 
                 <div className="acknowledgment mt-5 p-4 bg-light">
                   <p className="mb-0">
-                    <strong>DOSALGA SA DE CV</strong> is committed to protecting your privacy and ensuring the security of your 
-                    personal information. We comply with applicable data protection laws in Mexico, the United States, and the 
-                    European Union, including the Mexican Federal Law on Protection of Personal Data (LFPDPPP), the EU General 
-                    Data Protection Regulation (GDPR), and relevant U.S. state privacy laws.
+                    <strong>DOSALGA</strong> is committed to protecting your privacy and ensuring the security of your 
+                    personal information. We aim to comply with applicable privacy laws for the regions where we make our services
+                    available, including relevant U.S. state privacy laws and, where applicable, the EU General Data Protection
+                    Regulation (GDPR).
                   </p>
                 </div>
               </div>

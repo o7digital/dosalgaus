@@ -3,7 +3,7 @@ import HeroSlider from "../../components/home-uomo/HeroSlider";
 import ShopPage from "../shop";
 
 export default function HomeEs() {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://dosalga.store";
   const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
   const currentLocale = 'es';
   const path = '/es';

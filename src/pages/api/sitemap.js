@@ -6,7 +6,7 @@ import { getCategories, getProducts } from "@/src/lib/woocommerce";
  */
 export default async function handler(req, res) {
   try {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dosalgaus.com';
+    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dosalga.store';
     const currentDate = new Date().toISOString().split('T')[0];
     const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
     const pageSlugs = [

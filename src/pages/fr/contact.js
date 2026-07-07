@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 
 const ContactPageFr = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://dosalga.store";
   const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
   const slugByLocale = { en: '/contact', es: '/contact', de: '/contact', fr: '/contact', it: '/contact', pt: '/contact' };
   const currentLocale = 'fr';

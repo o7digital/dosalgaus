@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const TermsAndConditionsPage = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://dosalga.store";
   const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
   const slugByLocale = { en: '/terms-and-conditions', es: '/terms-and-conditions', de: '/terms-and-conditions', fr: '/terms-and-conditions', it: '/terms-and-conditions', pt: '/terms-and-conditions' };
   const currentLocale = 'en';
@@ -40,8 +40,8 @@ const TermsAndConditionsPage = () => {
                 <div className="policy-section mt-4">
                   <h3>1. Company Information</h3>
                   <p>
-                    Dosalga operates as an international online retailer. The company is legally registered in Mexico. All
-                    communications regarding orders must be made through the contact information provided on the website.
+                    Dosalga operates as an online retailer serving customers in the United States. All communications regarding
+                    orders must be made through the contact information provided on the website.
                   </p>
                 </div>
 
@@ -65,9 +65,10 @@ const TermsAndConditionsPage = () => {
                 <div className="policy-section mt-4">
                   <h3>4. Prices</h3>
                   <p>
-                    All prices displayed on the website are shown in the selected currency and do not include import duties, customs
-                    fees, or local taxes unless explicitly stated. Dosalga reserves the right to modify prices at any time. The price
-                    charged is the one displayed at the time the order is confirmed.
+                    All prices displayed on the website are shown in U.S. dollars unless explicitly stated otherwise. Prices do not
+                    include sales tax, use tax, import duties, tariffs, customs fees, carrier brokerage fees, or similar charges
+                    unless those amounts are expressly shown at checkout. Dosalga reserves the right to modify prices at any time.
+                    The price charged is the one displayed at the time the order is confirmed.
                   </p>
                 </div>
 
@@ -80,11 +81,16 @@ const TermsAndConditionsPage = () => {
                 </div>
 
                 <div className="policy-section mt-4">
-                  <h3>6. Taxes and Customs Duties</h3>
+                  <h3>6. Sales Tax and Customs Duties</h3>
                   <p>
-                    Import duties, customs fees, VAT, sales taxes, or similar charges imposed by local authorities are not included
-                    in the product price and remain the sole responsibility of the customer. Dosalga has no control over these
-                    charges and cannot predict their amount.
+                    U.S. sales tax may apply depending on the customer's shipping address and applicable state and local tax rules.
+                    If sales tax is collected, it will be shown before checkout is completed. If no sales tax is collected, the
+                    customer may still be responsible for applicable use tax or similar obligations under local law.
+                  </p>
+                  <p>
+                    Orders imported into the United States may also be subject to customs duties, tariffs, carrier brokerage fees, or
+                    other import-related charges. Unless expressly stated at checkout, those charges are not included in the product
+                    price and remain the responsibility of the customer.
                   </p>
                 </div>
 
@@ -133,8 +139,8 @@ const TermsAndConditionsPage = () => {
                 <div className="policy-section mt-4">
                   <h3>12. Governing Law and Jurisdiction</h3>
                   <p>
-                    These Terms and Conditions are governed by Mexican law. Any dispute shall fall under the exclusive jurisdiction of
-                    the competent courts of Mexico.
+                    These Terms and Conditions are governed by the laws applicable to the operator of the website, without prejudice
+                    to any mandatory consumer protection rights that may apply in the customer's place of residence.
                   </p>
                 </div>
               </div>

@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const AboutPage = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://dosalga.store";
   const locales = ['en', 'es'];
   const currentLocale = 'en';
   const slug = '/about-us';

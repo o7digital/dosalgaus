@@ -5,8 +5,8 @@ export default function Document() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Dosalga USA",
-    "url": "https://dosalgaus.com",
-    "logo": "https://dosalgaus.com/assets/img/sm-logo.svg",
+    "url": "https://dosalga.store",
+    "logo": "https://dosalga.store/assets/img/sm-logo.svg",
     "description": "Premium sportswear and activewear brand offering high-quality athletic clothing for an active lifestyle",
     "contactPoint": {
       "@type": "ContactPoint",
@@ -27,12 +27,12 @@ export default function Document() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Dosalga USA",
-    "url": "https://dosalgaus.com",
+    "url": "https://dosalga.store",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://dosalgaus.com/shop?search={search_term_string}"
+        "urlTemplate": "https://dosalga.store/shop?search={search_term_string}"
       },
       "query-input": "required name=search_term_string"
     }
