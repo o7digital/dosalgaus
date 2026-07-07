@@ -1,4 +1,4 @@
-import { parsePriceValue } from '@/src/lib/pricing';
+import { getStoreUSDPrice, parsePriceValue } from '@/src/lib/pricing';
 
 const FALLBACK_WORDPRESS_URL = 'https://oliviers55.sg-host.com';
 
@@ -542,7 +542,7 @@ const resolveLineItemsWithWooPrices = async ({ wcApi, lineItems = [], debugId })
         ? `products/${productId}/variations/${variationId}`
         : `products/${productId}`;
       const { data: wooProduct } = await wcApi.get(endpoint);
-      const wooUsdPrice = parsePriceValue(wooProduct?.price || wooProduct?.regular_price || wooProduct?.sale_price);
+      const wooUsdPrice = getStoreUSDPrice(wooProduct?.price || wooProduct?.regular_price || wooProduct?.sale_price);
 
       console.info(`[checkout:${debugId}] product_resolved`, {
         requestedProductId: productId,

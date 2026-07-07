@@ -10,11 +10,13 @@ export const parsePriceValue = (value) => {
   return Number.isFinite(numeric) ? numeric : null;
 };
 
+const DEFAULT_MXN_PER_USD = 17.5;
 const PRICE_FIELDS = ['price', 'regular_price', 'sale_price'];
 const STORE_CURRENCY = 'USD';
 
 export const getMXNPerUSD = () => {
-  return 1;
+  const configuredRate = parsePriceValue(process.env.NEXT_PUBLIC_MXN_PER_USD);
+  return configuredRate && configuredRate > 0 ? configuredRate : DEFAULT_MXN_PER_USD;
 };
 
 export const getWordPressPriceSourceCurrency = () => {
@@ -24,13 +26,14 @@ export const getWordPressPriceSourceCurrency = () => {
 export const convertUSDToMXN = (value) => {
   const numeric = parsePriceValue(value);
   if (numeric === null) return null;
-  return numeric;
+  return numeric * getMXNPerUSD();
 };
 
 export const getStoreMXNPrice = (value) => {
   const numeric = parsePriceValue(value);
   if (numeric === null) return null;
-  return numeric;
+  const sourceCurrency = getWordPressPriceSourceCurrency();
+  return sourceCurrency === 'MXN' ? numeric / getMXNPerUSD() : numeric;
 };
 
 export const normalizeStorePrice = getStoreMXNPrice;
@@ -64,7 +67,7 @@ export const formatLocalizedPrice = (value, options = {}) => {
 };
 
 const formatWooPriceValue = (value) => {
-  const usd = parsePriceValue(value);
+  const usd = getStoreMXNPrice(value);
   if (usd === null) return value;
   return usd.toFixed(2);
 };
@@ -97,8 +100,9 @@ export const normalizeWooProductPricesToMXN = (product) => {
     price_html: '',
     meta_data: [
       ...(Array.isArray(product.meta_data) ? product.meta_data : []),
-      { key: 'dosalga_price_source_currency', value: 'USD' },
+      { key: 'dosalga_price_source_currency', value: getWordPressPriceSourceCurrency() },
       { key: 'dosalga_price_display_currency', value: STORE_CURRENCY },
+      { key: 'dosalga_mxn_per_usd', value: String(getMXNPerUSD()) },
     ],
   };
 };
