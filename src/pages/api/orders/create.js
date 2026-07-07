@@ -1,6 +1,6 @@
 import { parsePriceValue } from '@/src/lib/pricing';
 
-const FALLBACK_WORDPRESS_URL = 'https://oliviers44.sg-host.com';
+const FALLBACK_WORDPRESS_URL = 'https://oliviers55.sg-host.com';
 
 const normalizeHttpsBaseUrl = (value, fallback = FALLBACK_WORDPRESS_URL) => {
   try {

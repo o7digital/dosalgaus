@@ -2,7 +2,7 @@ import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 
 const FALLBACK_KEY = "ck_962f8b4455545de9a9a6155616535fdf8d9eb1db";
 const FALLBACK_SECRET = "cs_4242ab75e9fb88408afd2961efb76b7ce9211bc9";
-const FALLBACK_WORDPRESS_URL = "https://oliviers44.sg-host.com";
+const FALLBACK_WORDPRESS_URL = "https://oliviers55.sg-host.com";
 const MAX_PRODUCTS_PER_PAGE = 100;
 
 const normalizeWordPressUrl = (value) => {
@@ -40,6 +40,19 @@ const normalizePerPage = (value, fallback = MAX_PRODUCTS_PER_PAGE) => {
   return Math.min(parsedValue, MAX_PRODUCTS_PER_PAGE);
 };
 
+const getWordPressAppAuth = () => {
+  const username = String(process.env.WP_APP_USER || process.env.WORDPRESS_APP_USER || "").trim();
+  const password = String(process.env.WP_APP_PASSWORD || process.env.WORDPRESS_APP_PASSWORD || "").trim();
+
+  if (!username || !password) {
+    return null;
+  }
+
+  return { username, password };
+};
+
+const wordpressAppAuth = getWordPressAppAuth();
+
 const api = new WooCommerceRestApi({
   url: normalizeWordPressUrl(
     process.env.WORDPRESS_URL
@@ -50,8 +63,9 @@ const api = new WooCommerceRestApi({
   consumerSecret: process.env.WC_CONSUMER_SECRET || FALLBACK_SECRET,
   version: "wc/v3",
   // Query string auth tends à mieux passer le captcha SG qu'un Basic header
-  queryStringAuth: true,
+  queryStringAuth: !wordpressAppAuth,
   axiosConfig: {
+    ...(wordpressAppAuth ? { auth: wordpressAppAuth } : {}),
     headers: {
       'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0 Safari/537.36',
       Accept: 'application/json',
