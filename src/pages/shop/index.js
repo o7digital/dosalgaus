@@ -30,9 +30,9 @@ const ShopPage = () => {
   const [hiddenImageProductIds, setHiddenImageProductIds] = useState([]);
   const supportedLocales = ['es', 'de', 'fr', 'it', 'pt'];
   const localeSegment = router.pathname.split('/')[1];
-  const currentLang = supportedLocales.includes(localeSegment) ? localeSegment : 'es';
+  const currentLang = supportedLocales.includes(localeSegment) ? localeSegment : 'en';
   const isSpanish = currentLang === 'es';
-  const localePrefix = currentLang === 'es' ? '' : `/${currentLang}`;
+  const localePrefix = currentLang === 'en' ? '' : `/${currentLang}`;
   const formatPrice = (value) => formatLocalizedPrice(value, { pathname: router.pathname });
 
   const sidebarRef = useRef(null);

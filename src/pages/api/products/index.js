@@ -44,7 +44,7 @@ export default async function handler(req, res) {
       on_sale,
       featured,
       all = false,
-      lang = 'es',
+      lang = 'en',
     } = req.query;
 
     const fetchAllProducts = isTrue(all);

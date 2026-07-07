@@ -5,7 +5,8 @@ import React, { createContext, useContext, useState, useEffect } from 'react';
 
 const CartContext = createContext();
 const DEFAULT_COUPON_LABEL = 'Remise socios';
-const CART_STORAGE_KEY = 'dosalga_cart_mxn_v2';
+const STORE_CURRENCY = 'USD';
+const CART_STORAGE_KEY = 'dosalga_cart_usd_v1';
 
 export const useCart = () => {
   const context = useContext(CartContext);
@@ -32,6 +33,7 @@ export const CartProvider = ({ children }) => {
       }
     }
     localStorage.removeItem('dosalga_cart');
+    localStorage.removeItem('dosalga_cart_mxn_v2');
 
     const savedCoupon = localStorage.getItem('dosalga_coupon');
     if (savedCoupon) {
@@ -225,7 +227,7 @@ export const CartProvider = ({ children }) => {
       }
 
       const orderData = {
-        currency: 'MXN',
+        currency: STORE_CURRENCY,
         billing: billingInfo,
         shipping: shippingInfo || billingInfo,
         customer_note: billingInfo.customer_note || '',

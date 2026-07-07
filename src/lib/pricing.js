@@ -10,12 +10,11 @@ export const parsePriceValue = (value) => {
   return Number.isFinite(numeric) ? numeric : null;
 };
 
-const DEFAULT_MXN_PER_USD = 17.23;
 const PRICE_FIELDS = ['price', 'regular_price', 'sale_price'];
+const STORE_CURRENCY = 'USD';
 
 export const getMXNPerUSD = () => {
-  const configuredRate = parsePriceValue(process.env.NEXT_PUBLIC_MXN_PER_USD);
-  return configuredRate && configuredRate > 0 ? configuredRate : DEFAULT_MXN_PER_USD;
+  return 1;
 };
 
 export const getWordPressPriceSourceCurrency = () => {
@@ -25,7 +24,7 @@ export const getWordPressPriceSourceCurrency = () => {
 export const convertUSDToMXN = (value) => {
   const numeric = parsePriceValue(value);
   if (numeric === null) return null;
-  return numeric * getMXNPerUSD();
+  return numeric;
 };
 
 export const getStoreMXNPrice = (value) => {
@@ -41,33 +40,33 @@ export const getStoreLocaleFromPath = (pathname = '') => {
   return segment === 'en' ? 'en' : 'es';
 };
 
-export const formatMXNPrice = (value, options = {}) => {
-  const { includeCode = true, fallback = includeCode ? '$0.00 MXN' : '$0.00' } = options;
-  const mxn = getStoreMXNPrice(value);
+export const formatUSDPrice = (value, options = {}) => {
+  const { includeCode = true, fallback = includeCode ? '$0.00 USD' : '$0.00' } = options;
+  const usd = getStoreMXNPrice(value);
 
-  if (mxn === null) return fallback;
+  if (usd === null) return fallback;
 
-  const formatted = `$${mxn.toLocaleString('en-US', {
+  const formatted = `$${usd.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
 
-  return includeCode ? `${formatted} MXN` : formatted;
+  return includeCode ? `${formatted} ${STORE_CURRENCY}` : formatted;
 };
 
+export const formatMXNPrice = formatUSDPrice;
 export const getStoreUSDPrice = getStoreMXNPrice;
-export const formatUSDPrice = formatMXNPrice;
-export const formatUSDPriceFromMXN = formatMXNPrice;
+export const formatUSDPriceFromMXN = formatUSDPrice;
 export const getUSDPriceFromMXN = normalizeStorePrice;
 
 export const formatLocalizedPrice = (value, options = {}) => {
-  return formatMXNPrice(value, options);
+  return formatUSDPrice(value, options);
 };
 
 const formatWooPriceValue = (value) => {
-  const mxn = convertUSDToMXN(value);
-  if (mxn === null) return value;
-  return mxn.toFixed(2);
+  const usd = parsePriceValue(value);
+  if (usd === null) return value;
+  return usd.toFixed(2);
 };
 
 const normalizePriceField = (product, field) => {
@@ -99,8 +98,7 @@ export const normalizeWooProductPricesToMXN = (product) => {
     meta_data: [
       ...(Array.isArray(product.meta_data) ? product.meta_data : []),
       { key: 'dosalga_price_source_currency', value: 'USD' },
-      { key: 'dosalga_price_display_currency', value: 'MXN' },
-      { key: 'dosalga_mxn_per_usd', value: String(getMXNPerUSD()) },
+      { key: 'dosalga_price_display_currency', value: STORE_CURRENCY },
     ],
   };
 };

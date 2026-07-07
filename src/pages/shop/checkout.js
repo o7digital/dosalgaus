@@ -1,13 +1,17 @@
-import React, { useMemo, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/router';
 import { useCart } from '@/src/contexts/CartContext';
 import { formatLocalizedPrice } from '@/src/lib/pricing';
 import { toast } from 'react-toastify';
 
+const CHECKOUT_PROFILE_STORAGE_KEY = 'dosalga_checkout_profile_v1';
+
+const DEFAULT_COUNTRY = 'US';
+
 const COUNTRY_OPTIONS = [
-  { value: 'MX', label: 'Mexico' },
   { value: 'US', label: 'United States' },
+  { value: 'MX', label: 'Mexico' },
   { value: 'CA', label: 'Canada' },
   { value: 'FR', label: 'France' },
   { value: 'OTHER', label: 'Other' },
@@ -133,7 +137,7 @@ const Checkout = () => {
     createOrder,
     isLoading,
   } = useCart();
-  const [billingCountry, setBillingCountry] = useState('MX');
+  const [billingCountry, setBillingCountry] = useState(DEFAULT_COUNTRY);
   const [billingState, setBillingState] = useState('');
   const [billingCity, setBillingCity] = useState('');
   const [billingFirstName, setBillingFirstName] = useState('');
@@ -153,7 +157,7 @@ const Checkout = () => {
   const [shippingLastName, setShippingLastName] = useState('');
   const [shippingAddress, setShippingAddress] = useState('');
   const [shippingColony, setShippingColony] = useState('');
-  const [shippingCountry, setShippingCountry] = useState('MX');
+  const [shippingCountry, setShippingCountry] = useState(DEFAULT_COUNTRY);
   const [shippingState, setShippingState] = useState('');
   const [shippingCity, setShippingCity] = useState('');
   const [shippingPostcode, setShippingPostcode] = useState('');
@@ -167,13 +171,36 @@ const Checkout = () => {
   const tax = 0;
   const total = getCartTotalAfterDiscount() + shipping + tax;
 
+  useEffect(() => {
+    try {
+      const savedProfile = JSON.parse(localStorage.getItem(CHECKOUT_PROFILE_STORAGE_KEY) || 'null');
+      if (!savedProfile) return;
+
+      setBillingFirstName(savedProfile.firstName || '');
+      setBillingLastName(savedProfile.lastName || '');
+      setBillingAddress(savedProfile.address || '');
+      setBillingColony(savedProfile.colony || '');
+      setBillingCountry(savedProfile.country || DEFAULT_COUNTRY);
+      setBillingState(savedProfile.state || '');
+      setBillingCity(savedProfile.city || '');
+      setBillingPostcode(savedProfile.postcode || '');
+      setBillingPhone(savedProfile.phone || '');
+      setBillingEmail(savedProfile.email || '');
+      setBillingIdentityNumber(savedProfile.identityNumber || '');
+      setCreateAccount(true);
+    } catch (error) {
+      console.error('Unable to restore checkout profile:', error);
+      localStorage.removeItem(CHECKOUT_PROFILE_STORAGE_KEY);
+    }
+  }, []);
+
   const billingStateOptions = useMemo(() => COUNTRY_STATES[billingCountry] || [], [billingCountry]);
   const shippingStateOptions = useMemo(() => COUNTRY_STATES[shippingCountry] || [], [shippingCountry]);
   const billingRequiresState = billingStateOptions.length > 0;
   const shippingRequiresState = shippingStateOptions.length > 0;
   const localeSegment = router.pathname.split('/')[1];
   const supportedLocales = ['es', 'de', 'fr', 'it', 'pt'];
-  const localePrefix = supportedLocales.includes(localeSegment) ? `/${localeSegment}` : '/es';
+  const localePrefix = supportedLocales.includes(localeSegment) ? `/${localeSegment}` : '';
   const termsPath = `${localePrefix}/terms-and-conditions`;
   const formatPrice = (value) => formatLocalizedPrice(value, { pathname: router.pathname });
   const getOrderPaymentUrl = (order) => {
@@ -267,6 +294,22 @@ const Checkout = () => {
             tax_id: shippingIdentityNumber.trim() ? normalizeIdentityValue(shippingIdentityNumber) : '',
           }
         : billingInfo;
+
+      if (createAccount) {
+        localStorage.setItem(CHECKOUT_PROFILE_STORAGE_KEY, JSON.stringify({
+          firstName: billingFirstName,
+          lastName: billingLastName,
+          address: billingAddress,
+          colony: billingColony,
+          country: billingCountry,
+          state: billingState,
+          city: billingCity,
+          postcode: billingPostcode,
+          phone: billingPhone,
+          email: billingEmail.trim().toLowerCase(),
+          identityNumber: identityValue,
+        }));
+      }
 
       const order = await createOrder(billingInfo, shippingInfo, {
         createAccount,

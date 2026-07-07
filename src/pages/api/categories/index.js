@@ -16,7 +16,7 @@ export default async function handler(req, res) {
   }
 
   try {
-    const { per_page = 100, hide_empty = true, lang = 'es' } = req.query;
+    const { per_page = 100, hide_empty = true, lang = 'en' } = req.query;
 
     const params = {
       per_page: parseInt(per_page),
