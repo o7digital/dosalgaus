@@ -32,8 +32,7 @@ export const convertUSDToMXN = (value) => {
 export const getStoreMXNPrice = (value) => {
   const numeric = parsePriceValue(value);
   if (numeric === null) return null;
-  const sourceCurrency = getWordPressPriceSourceCurrency();
-  return sourceCurrency === 'MXN' ? numeric / getMXNPerUSD() : numeric;
+  return numeric;
 };
 
 export const normalizeStorePrice = getStoreMXNPrice;
@@ -67,7 +66,11 @@ export const formatLocalizedPrice = (value, options = {}) => {
 };
 
 const formatWooPriceValue = (value) => {
-  const usd = getStoreMXNPrice(value);
+  const numeric = parsePriceValue(value);
+  if (numeric === null) return value;
+  const usd = getWordPressPriceSourceCurrency() === 'MXN'
+    ? numeric / getMXNPerUSD()
+    : numeric;
   if (usd === null) return value;
   return usd.toFixed(2);
 };
