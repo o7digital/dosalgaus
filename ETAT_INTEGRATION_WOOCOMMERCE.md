@@ -99,7 +99,7 @@ Page détails produit dynamique:
 
 #### ✅ `.env.local` - EXISTE
 ```env
-NEXT_PUBLIC_WORDPRESS_URL=https://oliviers44.sg-host.com
+NEXT_PUBLIC_WORDPRESS_URL=https://oliviers55.sg-host.com
 WC_CONSUMER_KEY=ck_962f8b4455545de9a9a6155616535fdf8d9eb1db
 WC_CONSUMER_SECRET=cs_4242ab75e9fb88408afd2961efb76b7ce9211bc9
 NEXT_PUBLIC_SITE_URL=http://localhost:3000

@@ -1,6 +1,6 @@
 const WooCommerceRestApi = require('@woocommerce/woocommerce-rest-api').default;
 
-const FALLBACK_WORDPRESS_URL = 'https://oliviers44.sg-host.com';
+const FALLBACK_WORDPRESS_URL = 'https://oliviers55.sg-host.com';
 const MAX_PRODUCTS_PER_PAGE = 100;
 const PRICE_FIELDS = ['regular_price', 'sale_price'];
 
