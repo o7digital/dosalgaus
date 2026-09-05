@@ -196,9 +196,10 @@ const Checkout = () => {
   const shippingStateOptions = useMemo(() => COUNTRY_STATES[shippingCountry] || [], [shippingCountry]);
   const billingRequiresState = billingStateOptions.length > 0;
   const shippingRequiresState = shippingStateOptions.length > 0;
-  const localeSegment = router.pathname.split('/')[1];
-  const supportedLocales = ['es', 'de', 'fr', 'it', 'pt'];
-  const localePrefix = supportedLocales.includes(localeSegment) ? `/${localeSegment}` : '/es';
+  const localeSegment = router.asPath.split('?')[0].split('/')[1];
+  const supportedLocales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
+  const localePrefix = supportedLocales.includes(localeSegment) ? `/${localeSegment}` : '';
+  const shopPath = `${localePrefix}/shop`;
   const termsPath = `${localePrefix}/terms-and-conditions`;
   const formatPrice = (value) => formatLocalizedPrice(value, { pathname: router.pathname });
   const getOrderPaymentUrl = (order) => {
@@ -603,7 +604,7 @@ const Checkout = () => {
                       <div className="product-info">
                         <h5>Your cart is empty</h5>
                         <p>Add products before checkout.</p>
-                        <Link legacyBehavior href="/shop">
+                        <Link legacyBehavior href={shopPath}>
                           <a className="primary-btn1 hover-btn3">Go to shop</a>
                         </Link>
                       </div>
@@ -622,7 +623,7 @@ const Checkout = () => {
                           </div>
                           <div className="product-info">
                             <h5>
-                              <Link legacyBehavior href={`/shop/product/${item.id}`}>
+                              <Link legacyBehavior href={`${shopPath}/product/${item.id}`}>
                                 <a>{item.name}</a>
                               </Link>
                             </h5>

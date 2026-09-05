@@ -9,12 +9,14 @@ const LanguageSwitcher = () => {
   const router = useRouter();
 
   const currentLang = (() => {
-    const seg = router.pathname.split('/')[1];
+    const seg = router.asPath.split('?')[0].split('/')[1];
     return ALL_LANGUAGES.includes(seg) ? seg : 'es';
   })();
 
   const buildPath = (targetLang) => {
-    const segments = router.asPath.split('/');
+    const [pathWithQuery, hash = ''] = router.asPath.split('#');
+    const [pathname, query = ''] = pathWithQuery.split('?');
+    const segments = pathname.split('/');
     if (ALL_LANGUAGES.includes(segments[1])) {
       segments[1] = targetLang === 'es' ? '' : targetLang;
     } else if (targetLang !== 'es') {
@@ -24,8 +26,8 @@ const LanguageSwitcher = () => {
     } else {
       return router.asPath || '/';
     }
-    const path = segments.filter(Boolean).join('/');
-    return `/${path}`;
+    const path = `/${segments.filter(Boolean).join('/')}`;
+    return `${path}${query ? `?${query}` : ''}${hash ? `#${hash}` : ''}`;
   };
 
   return (

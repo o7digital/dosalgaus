@@ -7,7 +7,8 @@ import { formatLocalizedPrice } from '@/src/lib/pricing';
 const Whistlist = () => {
   const { items, remove } = useWishlist();
   const router = useRouter();
-  const lang = router.pathname.split('/')[1];
+  const lang = router.asPath.split('?')[0].split('/')[1];
+  const localePrefix = lang === 'en' ? '/en' : lang === 'es' ? '/es' : '';
   const formatPrice = (value) => formatLocalizedPrice(value, { pathname: router.pathname });
   const t = (en, es, de, fr, it, pt) => {
     if (lang === 'es') return es;
@@ -41,6 +42,7 @@ const Whistlist = () => {
                       : lang === 'fr' ? '/fr/shop'
                       : lang === 'it' ? '/it/shop'
                       : lang === 'pt' ? '/pt/shop'
+                      : lang === 'en' ? '/en/shop'
                       : '/shop'}>
                     <a className="primary-btn1">{t('Browse products', 'Ver productos', 'Produkte ansehen', 'Voir les produits', 'Vedi prodotti', 'Ver produtos')}</a>
                   </Link>
@@ -58,7 +60,7 @@ const Whistlist = () => {
                   </thead>
                   <tbody>
                     {items.map((item) => {
-                      const productUrl = `/shop/product/${item.id}`;
+                      const productUrl = `${localePrefix}/shop/product/${item.id}`;
                       const mainImage = item.images?.[0]?.src || '/assets/img/placeholder.png';
                       const priceDisplay = item.sale_price
                         ? (
