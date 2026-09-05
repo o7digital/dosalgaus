@@ -5,15 +5,14 @@ export default function Document() {
     "@context": "https://schema.org",
     "@type": "Organization",
     "name": "Dosalga",
-    "url": "https://dosalga.com",
-    "logo": "https://dosalga.com/assets/img/sm-logo.svg",
-    "description": "Premium sportswear and activewear brand offering high-quality athletic clothing for an active lifestyle",
+    "url": "https://www.dosalga.store",
+    "logo": "https://www.dosalga.store/assets/img/sm-logo.svg",
+    "description": "Luggage, suitcases, travel bags, organizers, and practical travel accessories for customers in the United States.",
     "contactPoint": {
       "@type": "ContactPoint",
-      "telephone": "+52-965-871-8617",
       "contactType": "customer service",
       "email": "contact@dosalga.store",
-      "areaServed": ["US", "MX", "ES"],
+      "areaServed": "US",
       "availableLanguage": ["English", "Spanish"]
     },
     "sameAs": [
@@ -27,12 +26,12 @@ export default function Document() {
     "@context": "https://schema.org",
     "@type": "WebSite",
     "name": "Dosalga",
-    "url": "https://dosalga.com",
+    "url": "https://www.dosalga.store",
     "potentialAction": {
       "@type": "SearchAction",
       "target": {
         "@type": "EntryPoint",
-        "urlTemplate": "https://dosalga.com/shop?search={search_term_string}"
+        "urlTemplate": "https://www.dosalga.store/shop?search={search_term_string}"
       },
       "query-input": "required name=search_term_string"
     }

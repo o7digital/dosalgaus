@@ -9,7 +9,10 @@ import {
   getWooCommerceErrorDetails,
 } from '@/src/lib/woocommerce';
 import { normalizeWooProductsPricesToMXN } from '@/src/lib/pricing';
-import { translateWooProductsDescriptionsToSpanish } from '@/src/lib/productText';
+import {
+  translateWooProductsDescriptionsToSpanish,
+  translateWooProductsTextToEnglish,
+} from '@/src/lib/productText';
 import { isProductVisible } from '@/src/lib/productVisibility';
 
 const parsePositiveInteger = (value, fallback) => {
@@ -76,7 +79,7 @@ export default async function handler(req, res) {
       on_sale,
       featured,
       all = false,
-      lang = 'es',
+      lang = 'en',
     } = req.query;
 
     const fetchAllProducts = isTrue(all);
@@ -112,9 +115,9 @@ export default async function handler(req, res) {
       products.filter((product) => isProductVisible(product))
     );
     const normalizedProducts = normalizeWooProductsPricesToMXN(productsWithCurrencyReviews);
-    const visibleProducts = String(lang).toLowerCase() === 'en'
-      ? normalizedProducts
-      : translateWooProductsDescriptionsToSpanish(normalizedProducts);
+    const visibleProducts = String(lang).toLowerCase() === 'es'
+      ? translateWooProductsDescriptionsToSpanish(normalizedProducts)
+      : translateWooProductsTextToEnglish(normalizedProducts);
 
     res.status(200).json({
       success: true,

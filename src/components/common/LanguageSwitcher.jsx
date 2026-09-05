@@ -10,23 +10,23 @@ const LanguageSwitcher = () => {
 
   const currentLang = (() => {
     const seg = router.asPath.split('?')[0].split('/')[1];
-    return ALL_LANGUAGES.includes(seg) ? seg : 'es';
+    return ALL_LANGUAGES.includes(seg) ? seg : 'en';
   })();
 
   const buildPath = (targetLang) => {
     const [pathWithQuery, hash = ''] = router.asPath.split('#');
     const [pathname, query = ''] = pathWithQuery.split('?');
-    const segments = pathname.split('/');
-    if (ALL_LANGUAGES.includes(segments[1])) {
-      segments[1] = targetLang === 'es' ? '' : targetLang;
-    } else if (targetLang !== 'es') {
-      segments.splice(1, 0, targetLang);
-    } else if (targetLang === 'en') {
-      segments.splice(1, 0, 'en');
-    } else {
-      return router.asPath || '/';
+    const segments = pathname.split('/').filter(Boolean);
+
+    if (ALL_LANGUAGES.includes(segments[0])) {
+      segments.shift();
     }
-    const path = `/${segments.filter(Boolean).join('/')}`;
+
+    if (targetLang !== 'en') {
+      segments.unshift(targetLang);
+    }
+
+    const path = `/${segments.join('/')}`;
     return `${path}${query ? `?${query}` : ''}${hash ? `#${hash}` : ''}`;
   };
 

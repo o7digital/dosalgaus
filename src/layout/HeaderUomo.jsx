@@ -13,7 +13,7 @@ const HeaderUomo = () => {
     const lang = (() => {
         const supported = ['en', 'es', 'de', 'fr', 'it', 'pt'];
         const code = router.asPath.split('?')[0].split('/')[1];
-        return supported.includes(code) ? code : 'es';
+        return supported.includes(code) ? code : 'en';
     })();
 
     const navLabels = {
@@ -22,9 +22,10 @@ const HeaderUomo = () => {
         contact: { en: 'CONTACT', es: 'CONTACTO', de: 'KONTAKT', fr: 'CONTACT', it: 'CONTATTI', pt: 'CONTATO' },
     };
 
-    const localizedPath = (slug) => `/${lang}/${slug}`;
-    const localizedHome = lang === 'es' ? '/' : `/${lang}`;
-    const localizedWishlist = `/${lang}/shop/whistlist`;
+    const localePrefix = lang === 'en' ? '' : `/${lang}`;
+    const localizedPath = (slug) => `${localePrefix}/${slug}`;
+    const localizedHome = localePrefix || '/';
+    const localizedWishlist = `${localePrefix}/shop/whistlist`;
 
     useEffect(() => {
         const handleScroll = () => {

@@ -43,7 +43,7 @@ export const normalizeStorePrice = getStoreMXNPrice;
 
 export const getStoreLocaleFromPath = (pathname = '') => {
   const segment = String(pathname || '').split('/')[1];
-  return segment === 'en' ? 'en' : 'es';
+  return segment === 'es' ? 'es' : 'en';
 };
 
 export const formatMXNPrice = (value, options = {}) => {

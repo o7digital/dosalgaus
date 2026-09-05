@@ -21,8 +21,8 @@ const ProductCard = ({ product, showCountdown = false, detailHref = null, onImag
   const localeSegment = router.asPath.split('?')[0].split('/')[1];
   const currentLang = localeSegment === 'en'
     ? 'en'
-    : supportedLocales.includes(localeSegment) ? localeSegment : 'es';
-  const localePrefix = currentLang === 'es' ? '' : `/${currentLang}`;
+    : supportedLocales.includes(localeSegment) ? localeSegment : 'en';
+  const localePrefix = currentLang === 'en' ? '' : `/${currentLang}`;
   const isSpanish = currentLang === 'es';
   const formatPrice = (value) => formatLocalizedPrice(value, { pathname: router.pathname });
 
@@ -50,7 +50,7 @@ const ProductCard = ({ product, showCountdown = false, detailHref = null, onImag
   const hoverImage = visibleImages[1]?.src || visibleImages[1] || mainImage;
 
   // Extraire le nom de la première catégorie
-  const categoryName = categories[0]?.name || 'Produit';
+  const categoryName = categories[0]?.name || (isSpanish ? 'Producto' : 'Product');
 
   // Calculer le pourcentage de réduction
   const discountPercentage = on_sale && regular_price && sale_price

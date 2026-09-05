@@ -6,6 +6,9 @@ const CATEGORY_NAME_OVERRIDES = {
   corbatas: 'Corbatas',
   electronics: 'Electronica',
   garden: 'Jardin',
+  luggage: 'Maletas',
+  luggages: 'Maletas',
+  'hombre jackets': 'Accesorios de viaje',
   'men sweater': 'Sueteres para hombre',
   'mens sweater': 'Sueteres para hombre',
   "men's sweater": 'Sueteres para hombre',
@@ -18,6 +21,34 @@ const CATEGORY_NAME_OVERRIDES = {
   'womens jackets': 'Chaquetas para mujer',
   "women's jackets": 'Chaquetas para mujer',
 };
+
+const ENGLISH_CATEGORY_NAME_OVERRIDES = {
+  luggage: 'Luggage',
+  luggages: 'Luggage',
+  'hombre jackets': 'Travel Accessories',
+  'men jackets': 'Travel Accessories',
+  'travel bags': 'Travel Bags',
+};
+
+const ENGLISH_REPLACEMENTS = [
+  ['bolsas de viaje', 'travel bags'],
+  ['bolsos de viaje', 'travel bags'],
+  ['fundas para maletas', 'luggage covers'],
+  ['pulgadas', 'inches'],
+  ['organizadores', 'organizers'],
+  ['organizador', 'organizer'],
+  ['mochilas', 'backpacks'],
+  ['mochila', 'backpack'],
+  ['maletas', 'luggage'],
+  ['maleta', 'suitcase'],
+  ['bolsos', 'bags'],
+  ['bolso', 'bag'],
+  ['hombre', "men's"],
+  ['mujer', "women's"],
+  ['ropa', 'clothing'],
+  ['para', 'for'],
+  ['con', 'with'],
+];
 
 const SPANISH_REPLACEMENTS = [
   ['cross-border', 'importacion'],
@@ -263,6 +294,75 @@ const applyReplacements = (text) => {
     const pattern = new RegExp(`\\b${source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
     return nextText.replace(pattern, target);
   }, text);
+};
+
+const applyEnglishReplacements = (text) => {
+  return ENGLISH_REPLACEMENTS.reduce((nextText, [source, target]) => {
+    const pattern = new RegExp(`\\b${source.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')}\\b`, 'gi');
+    return nextText.replace(pattern, target);
+  }, text);
+};
+
+export const translateProductTextToEnglish = (value) => {
+  const raw = String(value ?? '');
+  if (!raw.trim()) return value;
+
+  return raw
+    .split(/(<[^>]+>)/g)
+    .map((part) => (part.startsWith('<') && part.endsWith('>') ? part : applyEnglishReplacements(part)))
+    .join('');
+};
+
+export const normalizeCategoryToEnglish = (category) => {
+  if (!category || typeof category !== 'object' || !category.name) {
+    return category;
+  }
+
+  const override = ENGLISH_CATEGORY_NAME_OVERRIDES[String(category.name).trim().toLowerCase()];
+
+  return {
+    ...category,
+    name: override || translateProductTextToEnglish(category.name),
+  };
+};
+
+export const normalizeCategoriesToEnglish = (categories) => {
+  if (!Array.isArray(categories)) {
+    return categories;
+  }
+
+  return categories.map(normalizeCategoryToEnglish);
+};
+
+export const translateWooProductTextToEnglish = (product) => {
+  if (!product || typeof product !== 'object' || Array.isArray(product)) {
+    return product;
+  }
+
+  const translatedProduct = TEXT_FIELDS.reduce((nextProduct, field) => {
+    const value = nextProduct[field];
+    if (value === null || value === undefined || value === '') {
+      return nextProduct;
+    }
+
+    return {
+      ...nextProduct,
+      [field]: translateProductTextToEnglish(value),
+    };
+  }, product);
+
+  return {
+    ...translatedProduct,
+    categories: normalizeCategoriesToEnglish(translatedProduct.categories),
+  };
+};
+
+export const translateWooProductsTextToEnglish = (products) => {
+  if (!Array.isArray(products)) {
+    return products;
+  }
+
+  return products.map(translateWooProductTextToEnglish);
 };
 
 export const translateProductTextToSpanish = (value) => {

@@ -3,8 +3,8 @@ import HeroSlider from "../../components/home-uomo/HeroSlider";
 import ShopPage from "../shop";
 
 export default function HomeEs() {
-  const siteUrl = "https://dosalga.com";
-  const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
+  const siteUrl = "https://www.dosalga.store";
+  const locales = ['en', 'es'];
   const currentLocale = 'es';
   const path = '/es';
   const hrefFor = (locale) => {
@@ -12,13 +12,13 @@ export default function HomeEs() {
     return `${siteUrl}/${locale}`;
   };
   const ogLocale = 'es_ES';
-  const keywords = 'ropa fitness Miami Florida, tienda de ropa fitness Miami Florida, ropa de gimnasio para mujer Miami Florida, ropa de gimnasio para hombre Miami Florida, ropa de entrenamiento Miami Florida, ropa deportiva fitness Miami Florida, ropa fitness premium Miami Florida, ropa fitness de alto rendimiento Miami Florida, ropa de yoga fitness Miami Florida, ropa fitness para correr Miami Florida, ropa fitness Ciudad de México, ropa fitness CDMX, tienda de ropa fitness Ciudad de México, ropa de gimnasio para mujer CDMX, ropa de gimnasio para hombre CDMX, ropa de entrenamiento Ciudad de México, ropa deportiva fitness CDMX, ropa fitness premium Ciudad de México, ropa fitness de alto rendimiento CDMX, ropa de yoga fitness CDMX';
+  const keywords = 'maletas, equipaje, bolsas de viaje, organizadores de equipaje, fundas para maletas, accesorios de viaje';
 
   return (
     <>
       <Head>
-        <title>Dosalga - Ropa Deportiva Premium y Estilo de Vida Activo | Activewear</title>
-        <meta name="description" content="Compra ropa deportiva premium en Dosalga. Descubre activewear de alto rendimiento, ropa de gimnasio y prendas lifestyle diseñadas para comodidad, estilo y durabilidad. Envío gratis disponible." />
+        <title>Dosalga USA - Maletas, equipaje y accesorios de viaje</title>
+        <meta name="description" content="Compra maletas, bolsas de viaje, organizadores, fundas protectoras y accesorios prácticos para viajar en Dosalga USA." />
         <meta name="keywords" content={keywords} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/assets/img/sm-logo.svg" />

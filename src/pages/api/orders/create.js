@@ -17,7 +17,7 @@ const WORDPRESS_URL = normalizeHttpsBaseUrl(process.env.NEXT_PUBLIC_WORDPRESS_UR
 const SOCIO_COUPON_CODE = String((process.env.SOCIO_COUPON_CODE || '2UP7NFF6')).trim().toUpperCase();
 const SOCIO_DISCOUNT_RATE = 0.50;
 const SOCIO_DISCOUNT_PERCENT = Math.round(SOCIO_DISCOUNT_RATE * 100);
-const STORE_CURRENCY = 'MXN';
+const STORE_CURRENCY = String(process.env.NEXT_PUBLIC_STORE_CURRENCY || 'USD').trim().toUpperCase();
 const CHECKOUT_DEBUG = process.env.CHECKOUT_DEBUG === '1';
 
 const parseAmount = (value, fallback = 0) => {

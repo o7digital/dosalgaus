@@ -1,1 +1,1 @@
-export { default } from './es/index';
+export { default } from './en/index';

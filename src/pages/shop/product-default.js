@@ -47,9 +47,9 @@ const ProductDefaultPage = () => {
   const localeSegment = router.asPath.split('?')[0].split('/')[1];
   const currentLang = localeSegment === 'en'
     ? 'en'
-    : supportedLocales.includes(localeSegment) ? localeSegment : 'es';
+    : supportedLocales.includes(localeSegment) ? localeSegment : 'en';
   const isSpanish = currentLang === 'es';
-  const localePrefix = currentLang === 'es' ? '' : `/${currentLang}`;
+  const localePrefix = currentLang === 'en' ? '' : `/${currentLang}`;
   const formatPrice = (value) => formatLocalizedPrice(value, { pathname: router.pathname });
 
   const queryId = Array.isArray(router.query.id) ? router.query.id[0] : router.query.id;

@@ -9,7 +9,10 @@ import {
   getWooCommerceErrorDetails,
 } from '@/src/lib/woocommerce';
 import { normalizeWooProductPricesToMXN, normalizeWooProductsPricesToMXN } from '@/src/lib/pricing';
-import { translateWooProductDescriptionsToSpanish } from '@/src/lib/productText';
+import {
+  translateWooProductDescriptionsToSpanish,
+  translateWooProductTextToEnglish,
+} from '@/src/lib/productText';
 import { isProductVisible } from '@/src/lib/productVisibility';
 
 export default async function handler(req, res) {
@@ -21,7 +24,7 @@ export default async function handler(req, res) {
     return res.status(405).json({ message: 'Method not allowed' });
   }
 
-  const { id, lang = 'es' } = req.query;
+  const { id, lang = 'en' } = req.query;
 
   try {
     const product = await getProduct(id);
@@ -50,9 +53,9 @@ export default async function handler(req, res) {
       reviews: Array.isArray(reviews) ? reviews : [],
     };
     const productWithMxnPrices = normalizeWooProductPricesToMXN(productWithReviews);
-    const normalizedProduct = String(lang).toLowerCase() === 'en'
-      ? productWithMxnPrices
-      : translateWooProductDescriptionsToSpanish(productWithMxnPrices);
+    const normalizedProduct = String(lang).toLowerCase() === 'es'
+      ? translateWooProductDescriptionsToSpanish(productWithMxnPrices)
+      : translateWooProductTextToEnglish(productWithMxnPrices);
     const normalizedVariations = normalizeWooProductsPricesToMXN(
       variations.map((variation) => ({
         ...variation,

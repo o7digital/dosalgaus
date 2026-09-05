@@ -4,7 +4,7 @@ import NewestProduct from '@/src/components/Home/NewestProduct'
 import GiftSection from '@/src/components/common/GiftSection'
 import useMagneticHover from '@/src/hooks/useMagneticHover';
 import ModalVideo from 'react-modal-video';
-import 'node_modules/react-modal-video/css/modal-video.css';
+import 'react-modal-video/css/modal-video.css';
 import QuantityCounter from '@/src/uitils/QuantityCounter';
 const VideoPopup = () => {
   const [isOpen, setOpen] = useState(false);

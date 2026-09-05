@@ -2,7 +2,7 @@ import React from 'react';
 import Head from 'next/head';
 
 const ContactPageEs = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://www.dosalga.store";
   const locales = ['en', 'es'];
   const slugByLocale = {
     en: '/contact',
@@ -17,7 +17,7 @@ const ContactPageEs = () => {
     <>
       <Head>
         <title>Contacto Dosalga - Atención al Cliente | Contáctanos</title>
-        <meta name="description" content="Contacta con el servicio de atención al cliente de Dosalga para consultas sobre nuestros productos de activewear, pedidos, envíos o devoluciones. Estamos aquí para ayudarte 24/7. Contáctanos por email o teléfono." />
+        <meta name="description" content="Contacta con Dosalga USA para resolver dudas sobre maletas, accesorios de viaje, pedidos, envíos o devoluciones." />
         <link rel="canonical" href={hrefFor(currentLocale)} />
         
         {/* Hreflang tags */}
@@ -31,7 +31,7 @@ const ContactPageEs = () => {
         <meta property="og:type" content="website" />
         <meta property="og:url" content={hrefFor(currentLocale)} />
         <meta property="og:title" content="Contacto Dosalga - Contáctanos" />
-        <meta property="og:description" content="Contacta con Dosalga para consultas sobre nuestros productos de activewear premium. Estamos para ayudarte." />
+        <meta property="og:description" content="Contacta con Dosalga USA para recibir ayuda con equipaje, accesorios de viaje, pedidos, envíos o devoluciones." />
         <meta property="og:site_name" content="Dosalga" />
         <meta property="og:image" content={ogImage} />
         <meta property="og:image:alt" content="Dosalga" />

@@ -8,7 +8,7 @@ const HeroSlider = () => {
     const lang = (() => {
         const code = router.pathname.split('/')[1];
         const supported = ['en', 'es', 'de', 'fr', 'it', 'pt'];
-        return supported.includes(code) ? code : 'es';
+        return supported.includes(code) ? code : 'en';
     })();
 
     const slidesByLang = {
@@ -16,58 +16,58 @@ const HeroSlider = () => {
             {
                 id: 1,
                 badge: "NEW ARRIVALS",
-                title: "Activewear Designed for Real Life",
-                subtitle: "Comfort, simplicity, and movement for everyday routines.",
-                cta: "Shop Essentials",
+                title: "Travel Better, Wherever You Go",
+                subtitle: "Practical luggage and smart accessories for every kind of journey.",
+                cta: "Shop Luggage",
                 image: "/slider/gemini1.png",
-                alt: "Lifestyle activewear designed for real life"
+                alt: "Travel essentials for journeys across the United States"
             },
             {
                 id: 2,
                 badge: "NEW ARRIVALS",
-                title: "Move Through Your Day With Ease",
-                subtitle: "Versatile activewear made to fit your lifestyle, not the gym.",
-                cta: "Discover the Collection",
+                title: "Pack More. Carry Smarter.",
+                subtitle: "Organizers, protective covers, and travel bags designed to simplify packing.",
+                cta: "Explore Accessories",
                 image: "/slider/gemini2.png",
-                alt: "Everyday activewear for modern lifestyles"
+                alt: "Luggage and packing accessories for organized travel"
             },
             {
                 id: 3,
                 badge: "NEW ARRIVALS",
-                title: "Comfort That Goes Wherever You Do",
-                subtitle: "Light layers and everyday essentials for real movement.",
-                cta: "Explore Dosalga",
+                title: "Ready for the Next Departure",
+                subtitle: "From quick getaways to longer trips, find the right luggage for the road ahead.",
+                cta: "Discover Dosalga",
                 image: "/slider/gemini3.png",
-                alt: "Comfortable activewear in real environments"
+                alt: "Reliable travel luggage for short and long trips"
             }
         ],
         es: [
             {
                 id: 1,
                 badge: "NUEVAS LLEGADAS",
-                title: "Activewear diseñado para la vida real",
-                subtitle: "Comodidad, sencillez y movimiento para tus rutinas diarias.",
-                cta: "Comprar esenciales",
+                title: "Viaja mejor, vayas donde vayas",
+                subtitle: "Maletas prácticas y accesorios inteligentes para cada tipo de viaje.",
+                cta: "Comprar maletas",
                 image: "/slider/gemini1.png",
-                alt: "Ropa activa para la vida cotidiana"
+                alt: "Equipaje práctico para viajar por Estados Unidos"
             },
             {
                 id: 2,
                 badge: "NUEVAS LLEGADAS",
-                title: "Muévete por tu día con facilidad",
-                subtitle: "Activewear versátil pensado para tu estilo de vida, no solo el gimnasio.",
-                cta: "Descubrir la colección",
+                title: "Organiza más. Carga mejor.",
+                subtitle: "Organizadores, fundas y bolsas de viaje que simplifican tu equipaje.",
+                cta: "Explorar accesorios",
                 image: "/slider/gemini2.png",
-                alt: "Activewear versátil para tu día"
+                alt: "Maletas y accesorios para organizar cada viaje"
             },
             {
                 id: 3,
                 badge: "NUEVAS LLEGADAS",
-                title: "Comodidad dondequiera que vayas",
-                subtitle: "Capas ligeras y esenciales diarios para moverte de verdad.",
-                cta: "Explora Dosalga",
+                title: "Listo para la próxima salida",
+                subtitle: "Encuentra el equipaje adecuado para una escapada o un viaje más largo.",
+                cta: "Descubrir Dosalga",
                 image: "/slider/gemini3.png",
-                alt: "Activewear cómodo en entornos reales"
+                alt: "Equipaje confiable para viajes cortos y largos"
             }
         ],
         de: [

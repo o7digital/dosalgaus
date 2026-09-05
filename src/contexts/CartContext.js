@@ -225,7 +225,7 @@ export const CartProvider = ({ children }) => {
       }
 
       const orderData = {
-        currency: 'MXN',
+        currency: String(process.env.NEXT_PUBLIC_STORE_CURRENCY || 'USD').trim().toUpperCase(),
         billing: billingInfo,
         shipping: shippingInfo || billingInfo,
         customer_note: billingInfo.customer_note || '',
