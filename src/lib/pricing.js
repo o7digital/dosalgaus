@@ -138,7 +138,7 @@ export const getWooProductMXNPrice = (product, value) => {
   if (numeric === null) return null;
 
   if (getStoreCurrency() === 'USD') {
-    return numeric;
+    return numeric / getMXNPerUSD();
   }
 
   return isImportedMXNProduct(product) ? numeric : numeric * getMXNPerUSD();
