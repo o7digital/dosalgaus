@@ -9,6 +9,8 @@ const CATEGORY_NAME_OVERRIDES = {
   luggage: 'Maletas',
   luggages: 'Maletas',
   'hombre jackets': 'Accesorios de viaje',
+  'mens jackets': 'Accesorios de viaje',
+  "men's jackets": 'Accesorios de viaje',
   'men sweater': 'Sueteres para hombre',
   'mens sweater': 'Sueteres para hombre',
   "men's sweater": 'Sueteres para hombre',
@@ -27,6 +29,8 @@ const ENGLISH_CATEGORY_NAME_OVERRIDES = {
   luggages: 'Luggage',
   'hombre jackets': 'Travel Accessories',
   'men jackets': 'Travel Accessories',
+  'mens jackets': 'Travel Accessories',
+  "men's jackets": 'Travel Accessories',
   'travel bags': 'Travel Bags',
 };
 
@@ -331,7 +335,12 @@ export const normalizeCategoriesToEnglish = (categories) => {
     return categories;
   }
 
-  return categories.map(normalizeCategoryToEnglish);
+  return categories
+    .filter((category) => {
+      const value = String(category?.slug || category?.name || '').trim().toLowerCase();
+      return value !== 'uncategorized';
+    })
+    .map(normalizeCategoryToEnglish);
 };
 
 export const translateWooProductTextToEnglish = (product) => {
@@ -393,7 +402,12 @@ export const translateCategoriesToSpanish = (categories) => {
     return categories;
   }
 
-  return categories.map(translateCategoryToSpanish);
+  return categories
+    .filter((category) => {
+      const value = String(category?.slug || category?.name || '').trim().toLowerCase();
+      return value !== 'uncategorized';
+    })
+    .map(translateCategoryToSpanish);
 };
 
 export const translateWooProductTextToSpanish = (product) => {
