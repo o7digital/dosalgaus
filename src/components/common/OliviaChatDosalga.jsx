@@ -5,6 +5,7 @@ const SITE_CODE = "dosalga";
 const OLIVIA_API = "https://olivia-ai.o7digital.com/api";
 const LEAD_ENDPOINT = `${OLIVIA_API}/widget/conversations`;
 const CHAT_ENDPOINT = `${OLIVIA_API}/olivia/chat`;
+const IDENTITY_ENDPOINT = `${OLIVIA_API}/widget/identity`;
 const OFFLINE = false;
 
 const COPY = {
@@ -25,7 +26,10 @@ const COPY = {
     leadThanks: "Gracias. Tus datos fueron enviados y un asesor te contactara pronto.",
     placeholder: "Escribe tu pregunta...",
     send: "Enviar",
-    error: "No pude enviar el mensaje. Intenta de nuevo o contacta directamente a DOSALGA."
+    error: "No pude enviar el mensaje. Intenta de nuevo o contacta directamente a DOSALGA.",
+    privacy: "He leído y acepto el",
+    privacyLink: "Aviso de Privacidad",
+    privacyRequired: "Acepta el Aviso de Privacidad para poder chatear."
   },
   en: {
     title: "Olivia",
@@ -44,7 +48,10 @@ const COPY = {
     leadThanks: "Thanks. Your details were sent and an advisor will contact you soon.",
     placeholder: "Write your question...",
     send: "Send",
-    error: "I could not send the message. Please try again or contact DOSALGA directly."
+    error: "I could not send the message. Please try again or contact DOSALGA directly.",
+    privacy: "I have read and accept the",
+    privacyLink: "Privacy Notice",
+    privacyRequired: "Please accept the Privacy Notice to start the chat."
   },
   fr: {
     title: "Olivia",
@@ -141,10 +148,17 @@ export default function OliviaChatDosalga() {
   const firstSegment = router.asPath.split("/").filter(Boolean)[0];
   const language = ["en", "es", "fr", "de", "it", "pt"].includes(firstSegment) ? firstSegment : "en";
   const copy = COPY[language] || COPY.en;
+  const privacyCopy = {
+    privacy: copy.privacy || COPY.en.privacy,
+    privacyLink: copy.privacyLink || COPY.en.privacyLink,
+    privacyRequired: copy.privacyRequired || COPY.en.privacyRequired,
+  };
 
   const [isOpen, setIsOpen] = useState(false);
   const [input, setInput] = useState("");
   const [isLoading, setIsLoading] = useState(false);
+  const [identity, setIdentity] = useState("");
+  const [privacyAccepted, setPrivacyAccepted] = useState(false);
   const [leadSent, setLeadSent] = useState(true);
   const [lead, setLead] = useState({ firstName: "", lastName: "", email: "", phone: "" });
   const [messages, setMessages] = useState(
@@ -161,18 +175,27 @@ export default function OliviaChatDosalga() {
     });
   }, [copy.welcome]);
 
+  useEffect(() => {
+    let active = true;
+    fetch(IDENTITY_ENDPOINT, { cache: "no-store" })
+      .then((response) => response.ok ? response.json() : Promise.reject(new Error("identity failed")))
+      .then((data) => { if (active) setIdentity(data.identity || ""); })
+      .catch(() => { if (active) setIdentity(""); });
+    return () => { active = false; };
+  }, []);
+
   const transcript = useMemo(() => messages.map((msg) => `${msg.role}: ${msg.content}`).join("\n"), [messages]);
 
   const submitLead = async (event) => {
     event.preventDefault();
     if (OFFLINE) return;
-    if (!lead.firstName.trim() || !lead.lastName.trim() || !lead.email.trim() || !lead.phone.trim() || isLoading) return;
+    if (!lead.firstName.trim() || !lead.lastName.trim() || !lead.email.trim() || !lead.phone.trim() || isLoading || !identity) return;
 
     setIsLoading(true);
     try {
       const response = await fetch(LEAD_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "X-Olivia-Widget-Identity": identity },
         body: JSON.stringify({
           clientCode: SITE_CODE,
           visitorId,
@@ -205,8 +228,7 @@ export default function OliviaChatDosalga() {
   const sendMessage = async () => {
     if (OFFLINE) return;
     const message = input.trim();
-    if (!message || isLoading || !leadSent) return;
-    const messageLanguage = detectMessageLanguage(message, language);
+    if (!message || isLoading || !leadSent || !privacyAccepted || !identity) return;
 
     setInput("");
     setMessages((prev) => [...prev, { role: "user", content: message }]);
@@ -215,10 +237,10 @@ export default function OliviaChatDosalga() {
     try {
       const response = await fetch(CHAT_ENDPOINT, {
         method: "POST",
-        headers: { "Content-Type": "application/json" },
+        headers: { "Content-Type": "application/json", "X-Olivia-Widget-Identity": identity },
         body: JSON.stringify({
           message,
-          language: messageLanguage,
+          language,
           clientCode: SITE_CODE,
           visitorId,
           metadata: {
@@ -228,6 +250,7 @@ export default function OliviaChatDosalga() {
         })
       });
       const data = await response.json();
+      if (!response.ok) throw new Error(data.error || "chat failed");
       setMessages((prev) => [...prev, { role: "assistant", content: data.reply || copy.error }]);
     } catch {
       setMessages((prev) => [...prev, { role: "assistant", content: copy.error }]);
@@ -266,9 +289,15 @@ export default function OliviaChatDosalga() {
             </form>
           )}
 
+          <div className="olivia-dosalga-privacy">
+            <label>
+              <input type="checkbox" checked={privacyAccepted} onChange={(e) => setPrivacyAccepted(e.target.checked)} />
+              <span>{privacyCopy.privacy} <a href={language === "es" ? "/es/privacy-policy" : "/privacy-policy"} target="_blank" rel="noreferrer">{privacyCopy.privacyLink}</a>.</span>
+            </label>
+          </div>
           <div className="olivia-dosalga-composer">
-            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }} disabled={OFFLINE || !leadSent || isLoading} placeholder={OFFLINE ? "Offline" : copy.placeholder} />
-            <button type="button" onClick={sendMessage} disabled={OFFLINE || isLoading || !leadSent} aria-label={copy.send}>{">"}</button>
+            <input value={input} onChange={(e) => setInput(e.target.value)} onKeyDown={(e) => { if (e.key === "Enter") sendMessage(); }} disabled={OFFLINE || !leadSent || isLoading || !privacyAccepted || !identity} placeholder={OFFLINE ? "Offline" : !privacyAccepted ? privacyCopy.privacyRequired : copy.placeholder} />
+            <button type="button" onClick={sendMessage} disabled={OFFLINE || isLoading || !leadSent || !privacyAccepted || !identity} aria-label={copy.send}>{">"}</button>
           </div>
         </section>
       )}
@@ -307,6 +336,10 @@ export default function OliviaChatDosalga() {
         .olivia-dosalga-lead button,.olivia-dosalga-composer button,.olivia-dosalga-toggle { background: #fff; color: #111; font-weight: 900; }
         .olivia-dosalga-lead button { padding: 12px 14px; border-radius: 12px; }
         .olivia-dosalga-composer { display: grid; grid-template-columns: 1fr 52px; gap: 9px; padding: 14px; background: #121214; border-top: 1px solid rgba(255,255,255,.1); }
+        .olivia-dosalga-privacy { padding: 10px 14px 0; background: #121214; color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.35; }
+        .olivia-dosalga-privacy label { display: flex; gap: 8px; align-items: flex-start; cursor: pointer; }
+        .olivia-dosalga-privacy input { margin: 3px 0 0; accent-color: #fff; }
+        .olivia-dosalga-privacy a { color: #fff; text-decoration: underline; font-weight: 700; }
         .olivia-dosalga-composer input { padding: 12px 13px; }
         .olivia-dosalga-composer button { border-radius: 12px; font-size: 20px; }
         .olivia-dosalga-composer button:disabled,.olivia-dosalga-lead button:disabled,.olivia-dosalga-composer input:disabled { opacity: .58; cursor: not-allowed; }
