@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const AboutPage = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://www.dosalga.store";
   const locales = ['en', 'es'];
   const currentLocale = 'en';
   const slug = '/about-us';
@@ -36,18 +36,23 @@ const AboutPage = () => {
         <meta property="og:image:alt" content="Dosalga" />
       </Head>
       
-      <div className="about-page pt-100 pb-100">
-        <div className="container">
-          <div className="row justify-content-center mb-60">
-            <div className="col-lg-8 text-center">
-            <h1 className="mb-3">About Dosalga</h1>
-            <p className="text-muted">
-              Dosalga is a company dedicated to making everyday products easy to get, delivering them to your home, office, or any selected location. We prioritize convenience, accessibility, and efficiency.
+      <div className="about-page pb-100">
+        <section className="about-hero">
+          <img
+            src="https://www.o7digital.com/assets/hammer-group.webp"
+            alt="Modern office representing the Dosalga team and company story"
+          />
+          <div className="about-hero-overlay" />
+          <div className="about-hero-content">
+            <span>About Dosalga</span>
+            <h1>Useful products for a simpler life</h1>
+            <p>
+              Since 2013, we have brought functional products closer to people and businesses through a clear, practical and reliable shopping experience.
             </p>
           </div>
-        </div>
-
-        <div className="row justify-content-center">
+        </section>
+        <div className="container">
+        <div className="row justify-content-center pt-100">
           <div className="col-lg-10">
             <div className="about-card bg-white border p-4 p-lg-5 mb-40 rounded-3">
               <h2 className="h4 mb-3">Products Designed for Daily Life</h2>
@@ -116,6 +121,16 @@ const AboutPage = () => {
           </div>
         </div>
       </div>
+      <style jsx>{`
+        .about-hero { position: relative; width: 100%; height: calc(100vh - 80px); min-height: 620px; overflow: hidden; }
+        .about-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+        .about-hero-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, .54); }
+        .about-hero-content { position: relative; z-index: 1; height: 100%; max-width: 1320px; margin: auto; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #fff; }
+        .about-hero-content span { color: #fff; text-transform: uppercase; letter-spacing: .18em; font-size: 13px; font-weight: 800; }
+        .about-hero-content h1 { max-width: 1200px; margin: 20px auto 24px; color: #fff !important; font-size: clamp(52px, 7vw, 104px); line-height: .98; letter-spacing: -.045em; }
+        .about-hero-content p { max-width: 900px; margin: 0; color: #fff; font-size: clamp(18px, 2vw, 25px); line-height: 1.55; }
+        @media (max-width: 767px) { .about-hero { height: calc(100vh - 70px); min-height: 560px; } .about-hero-content { padding: 24px; } .about-hero-content h1 { font-size: clamp(44px, 14vw, 68px); } }
+      `}</style>
     </>
   );
 };

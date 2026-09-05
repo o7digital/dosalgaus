@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const AboutPageEs = () => {
-  const siteUrl = "https://dosalga.com";
+  const siteUrl = "https://www.dosalga.store";
   const locales = ['en', 'es'];
   const currentLocale = 'es';
   const slug = '/about-us';
@@ -35,18 +35,23 @@ const AboutPageEs = () => {
         <meta property="og:image" content={ogImage} />
         <meta property="og:image:alt" content="Dosalga" />
       </Head>
-    <div className="about-page pt-100 pb-100">
-      <div className="container">
-        <div className="row justify-content-center mb-60">
-          <div className="col-lg-8 text-center">
-            <h1 className="mb-3">Sobre Dosalga</h1>
-            <p className="text-muted">
-              Dosalga es una empresa dedicada a facilitar la adquisición de productos diseñados para la vida diaria, permitiendo recibirlos directamente en el hogar, oficina o cualquier ubicación seleccionada. Nuestro modelo prioriza la comodidad, la accesibilidad y la eficiencia.
-            </p>
-          </div>
+    <div className="about-page pb-100">
+      <section className="about-hero">
+        <img
+          src="https://www.o7digital.com/assets/hammer-group.webp"
+          alt="Oficina moderna que representa el equipo y la historia de Dosalga"
+        />
+        <div className="about-hero-overlay" />
+        <div className="about-hero-content">
+          <span>Sobre Dosalga</span>
+          <h1>Productos útiles para una vida más simple</h1>
+          <p>
+            Desde 2013 acercamos productos funcionales a personas y empresas con una experiencia de compra clara, práctica y confiable.
+          </p>
         </div>
-
-        <div className="row justify-content-center">
+      </section>
+      <div className="container">
+        <div className="row justify-content-center pt-100">
           <div className="col-lg-10">
             <div className="about-card bg-white border p-4 p-lg-5 mb-40 rounded-3">
               <h2 className="h4 mb-3">Artículos diseñados para la vida diaria</h2>
@@ -115,6 +120,16 @@ const AboutPageEs = () => {
         </div>
       </div>
     </div>
+    <style jsx>{`
+      .about-hero { position: relative; width: 100%; height: calc(100vh - 80px); min-height: 620px; overflow: hidden; }
+      .about-hero img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; }
+      .about-hero-overlay { position: absolute; inset: 0; background: rgba(0, 0, 0, .54); }
+      .about-hero-content { position: relative; z-index: 1; height: 100%; max-width: 1320px; margin: auto; padding: 40px; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; color: #fff; }
+      .about-hero-content span { color: #fff; text-transform: uppercase; letter-spacing: .18em; font-size: 13px; font-weight: 800; }
+      .about-hero-content h1 { max-width: 1200px; margin: 20px auto 24px; color: #fff !important; font-size: clamp(52px, 7vw, 104px); line-height: .98; letter-spacing: -.045em; }
+      .about-hero-content p { max-width: 900px; margin: 0; color: #fff; font-size: clamp(18px, 2vw, 25px); line-height: 1.55; }
+      @media (max-width: 767px) { .about-hero { height: calc(100vh - 70px); min-height: 560px; } .about-hero-content { padding: 24px; } .about-hero-content h1 { font-size: clamp(44px, 14vw, 68px); } }
+    `}</style>
     </>
   );
 };
