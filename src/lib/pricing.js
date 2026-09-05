@@ -23,6 +23,10 @@ export const getWordPressPriceSourceCurrency = () => {
   return String(process.env.NEXT_PUBLIC_WP_PRICE_SOURCE_CURRENCY || 'USD').trim().toUpperCase();
 };
 
+export const getStoreCurrency = () => {
+  return String(process.env.NEXT_PUBLIC_STORE_CURRENCY || 'MXN').trim().toUpperCase();
+};
+
 export const convertUSDToMXN = (value) => {
   const numeric = parsePriceValue(value);
   if (numeric === null) return null;
@@ -53,7 +57,8 @@ export const formatMXNPrice = (value, options = {}) => {
     maximumFractionDigits: 2,
   })}`;
 
-  return includeCode ? `${formatted} MXN` : formatted;
+  const currency = getStoreCurrency();
+  return includeCode ? `${formatted} ${currency}` : formatted;
 };
 
 export const getStoreUSDPrice = getStoreMXNPrice;
@@ -131,6 +136,10 @@ export const isImportedMXNProduct = (product) => {
 export const getWooProductMXNPrice = (product, value) => {
   const numeric = parsePriceValue(value);
   if (numeric === null) return null;
+
+  if (getStoreCurrency() === 'USD') {
+    return numeric;
+  }
 
   return isImportedMXNProduct(product) ? numeric : numeric * getMXNPerUSD();
 };
