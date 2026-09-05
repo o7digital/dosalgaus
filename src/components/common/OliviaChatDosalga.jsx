@@ -169,11 +169,11 @@ export default function OliviaChatDosalga() {
 
   useEffect(() => {
     if (OFFLINE) return;
-    setMessages((prev) => {
-      if (prev.length !== 1 || prev[0]?.role !== "assistant") return prev;
-      return [{ role: "assistant", content: copy.welcome }];
-    });
-  }, [copy.welcome]);
+    // A locale switch must also reset the visible greeting/transcript. Otherwise
+    // an already-open English conversation remains visible on the Spanish page.
+    setMessages([{ role: "assistant", content: copy.welcome }]);
+    setInput("");
+  }, [language, copy.welcome]);
 
   useEffect(() => {
     let active = true;
