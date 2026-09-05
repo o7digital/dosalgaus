@@ -145,7 +145,10 @@ function detectMessageLanguage(message, fallbackLanguage) {
 export default function OliviaChatDosalga() {
   const router = useRouter();
   const [visitorId] = useState(() => `dosalga-${Date.now()}-${Math.random().toString(16).slice(2)}`);
-  const firstSegment = router.asPath.split("/").filter(Boolean)[0];
+  // Use the browser pathname after hydration: Next can briefly expose the
+  // source route during a locale rewrite, which left the widget in English.
+  const currentPath = typeof window !== "undefined" ? window.location.pathname : router.asPath;
+  const firstSegment = currentPath.split("/").filter(Boolean)[0];
   const language = ["en", "es", "fr", "de", "it", "pt"].includes(firstSegment) ? firstSegment : "en";
   const copy = COPY[language] || COPY.en;
   const privacyCopy = {
