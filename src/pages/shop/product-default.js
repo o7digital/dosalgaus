@@ -201,8 +201,10 @@ const ProductDefaultPage = () => {
     return text.length > 260 ? `${text.slice(0, 260).trim()}...` : text;
   }, [product?.description, product?.short_description]);
   const productDescription = useMemo(() => {
-    return product?.description || product?.short_description || '';
-  }, [product?.description, product?.short_description]);
+    return isSpanish
+      ? product?.short_description || product?.description || ''
+      : product?.description || product?.short_description || '';
+  }, [isSpanish, product?.description, product?.short_description]);
 
   const renderStars = () => {
     const stars = [];

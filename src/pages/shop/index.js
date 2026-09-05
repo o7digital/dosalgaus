@@ -40,6 +40,12 @@ const ShopPage = () => {
   const sidebarRef = useRef(null);
   const sidebarBtnRef = useRef(null);
 
+  const selectCategory = (categoryId = '') => {
+    setSelectedCategory(String(categoryId));
+    setPage(1);
+    setIsOpenSidebar(false);
+  };
+
   useEffect(() => {
     const handleOutsideClick = (event) => {
       if (
@@ -161,30 +167,32 @@ const ShopPage = () => {
         <div className="sidebar-area">
           <div className="shop-widget mb-30">
             <div className="check-box-item">
-              <h5 className="shop-widget-title">{isSpanish ? 'Categorias' : 'Categories'}</h5>
+              <h5 className="shop-widget-title">{isSpanish ? 'Categorías' : 'Categories'}</h5>
               <ul className="shop-item">
                 <li>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setSelectedCategory('');
-                    }}
+                  <button
+                    type="button"
+                    className={`sidebar-filter-button ${selectedCategory ? '' : 'is-active'}`}
+                    aria-pressed={!selectedCategory}
+                    onClick={() => selectCategory('')}
                   >
-                    {isSpanish ? 'Todos los productos' : 'All Products'}
-                  </a>
+                    <span className="filter-indicator" />
+                    <span>{isSpanish ? 'Todos los productos' : 'All Products'}</span>
+                    <small>{totalCategoryCount}</small>
+                  </button>
                 </li>
                 {categories.map((category) => (
                   <li key={category.id}>
-                    <a
-                      href="#"
-                      onClick={(e) => {
-                        e.preventDefault();
-                        setSelectedCategory(String(category.id));
-                      }}
+                    <button
+                      type="button"
+                      className={`sidebar-filter-button ${String(category.id) === selectedCategory ? 'is-active' : ''}`}
+                      aria-pressed={String(category.id) === selectedCategory}
+                      onClick={() => selectCategory(category.id)}
                     >
-                      {category.name}
-                    </a>
+                      <span className="filter-indicator" />
+                      <span>{category.name}</span>
+                      <small>{category.count}</small>
+                    </button>
                   </li>
                 ))}
               </ul>
@@ -265,7 +273,7 @@ const ShopPage = () => {
             <button
               type="button"
               className={`dosalga-chip ${selectedCategory ? '' : 'is-active'}`}
-              onClick={() => setSelectedCategory('')}
+              onClick={() => selectCategory('')}
             >
               {isSpanish ? 'Todos' : 'All'} ({totalCategoryCount || products.length})
             </button>
@@ -275,7 +283,7 @@ const ShopPage = () => {
                 key={category.id}
                 type="button"
                 className={`dosalga-chip ${String(category.id) === selectedCategory ? 'is-active' : ''}`}
-                onClick={() => setSelectedCategory(String(category.id))}
+                onClick={() => selectCategory(category.id)}
               >
                 {category.name} ({category.count})
               </button>
@@ -410,6 +418,43 @@ const ShopPage = () => {
           display: inline-flex;
           align-items: center;
           gap: 8px;
+        }
+
+        .sidebar-filter-button {
+          width: 100%;
+          display: grid;
+          grid-template-columns: 18px 1fr auto;
+          align-items: center;
+          gap: 10px;
+          padding: 9px 0;
+          border: 0;
+          background: transparent;
+          color: #333;
+          text-align: left;
+          cursor: pointer;
+        }
+
+        .sidebar-filter-button:hover,
+        .sidebar-filter-button.is-active {
+          color: #d20000;
+        }
+
+        .filter-indicator {
+          width: 16px;
+          height: 16px;
+          border: 1px solid #777;
+          border-radius: 50%;
+          box-shadow: inset 0 0 0 4px #fff;
+        }
+
+        .sidebar-filter-button.is-active .filter-indicator {
+          border-color: #d20000;
+          background: #d20000;
+        }
+
+        .sidebar-filter-button small {
+          color: #888;
+          font-size: 12px;
         }
 
         .grid-view li {

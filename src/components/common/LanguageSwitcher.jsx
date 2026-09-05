@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import React from 'react';
 
 const ALL_LANGUAGES = ['en', 'es', 'de', 'fr', 'it', 'pt'];
@@ -13,8 +12,8 @@ const LanguageSwitcher = () => {
     return ALL_LANGUAGES.includes(seg) ? seg : 'en';
   })();
 
-  const buildPath = (targetLang) => {
-    const [pathWithQuery, hash = ''] = router.asPath.split('#');
+  const buildPath = (targetLang, sourcePath = router.asPath) => {
+    const [pathWithQuery, hash = ''] = sourcePath.split('#');
     const [pathname, query = ''] = pathWithQuery.split('?');
     const segments = pathname.split('/').filter(Boolean);
 
@@ -30,6 +29,14 @@ const LanguageSwitcher = () => {
     return `${path}${query ? `?${query}` : ''}${hash ? `#${hash}` : ''}`;
   };
 
+  const switchLanguage = (targetLang) => {
+    const browserPath = typeof window === 'undefined'
+      ? router.asPath
+      : `${window.location.pathname}${window.location.search}${window.location.hash}`;
+
+    router.push(buildPath(targetLang, browserPath));
+  };
+
   return (
     <div className="language-switcher" style={{
       display: 'flex',
@@ -41,8 +48,10 @@ const LanguageSwitcher = () => {
         const active = currentLang === lang;
         const label = lang.toUpperCase();
         return (
-          <Link href={buildPath(lang)} key={lang}>
-            <button
+          <button
+              key={lang}
+              type="button"
+              onClick={() => switchLanguage(lang)}
               className={`lang-btn ${active ? 'active' : ''}`}
               style={{
                 padding: '5px 10px',
@@ -56,9 +65,8 @@ const LanguageSwitcher = () => {
                 transition: 'all 0.2s ease'
               }}
             >
-              {label}
-            </button>
-          </Link>
+            {label}
+          </button>
         );
       })}
     </div>

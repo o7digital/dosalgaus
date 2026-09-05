@@ -4,7 +4,6 @@
  */
 import {
   getProduct,
-  getProductReviews,
   getProductVariations,
   getWooCommerceErrorDetails,
 } from '@/src/lib/woocommerce';
@@ -47,10 +46,9 @@ export default async function handler(req, res) {
       variations = await getProductVariations(id);
     }
 
-    const reviews = await getProductReviews({ product: id, per_page: 100 });
     const productWithReviews = {
       ...product,
-      reviews: Array.isArray(reviews) ? reviews : [],
+      reviews: [],
     };
     const productWithMxnPrices = normalizeWooProductPricesToMXN(productWithReviews);
     const normalizedProduct = String(lang).toLowerCase() === 'es'
