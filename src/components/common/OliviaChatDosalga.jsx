@@ -317,23 +317,23 @@ export default function OliviaChatDosalga() {
       <style jsx global>{`
         .olivia-dosalga-chat { position: fixed; right: 22px; bottom: 22px; z-index: 2147483646; font-family: system-ui, -apple-system, Segoe UI, sans-serif; }
         .olivia-dosalga-chat * { box-sizing: border-box; }
-        .olivia-dosalga-panel { width: min(390px, calc(100vw - 28px)); height: min(650px, calc(100vh - 110px)); margin-bottom: 14px; display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(255,255,255,.22); border-radius: 18px; background: #121214; color: #fff; box-shadow: 0 28px 90px rgba(0,0,0,.55); }
-        .olivia-dosalga-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 18px; background: linear-gradient(135deg, rgba(255,255,255,.16), rgba(0,0,0,.22)); border-bottom: 1px solid rgba(255,255,255,.2); }
+        .olivia-dosalga-panel { width: min(390px, calc(100vw - 28px)); height: min(650px, calc(100vh - 110px)); margin-bottom: 14px; display: flex; flex-direction: column; overflow: hidden; border: 1px solid rgba(255,255,255,.14); border-radius: 26px; background: linear-gradient(145deg,#261b1b,#080808); color: #fff; box-shadow: 0 42px 72px -24px #000b,0 8px 24px -12px #d2000080,inset 0 1px #ffffff2b; animation:olivia-in .32s ease; }
+        .olivia-dosalga-header { display: flex; align-items: center; justify-content: space-between; gap: 14px; padding: 17px 18px; background: linear-gradient(135deg,#080808,#3b1212); border-bottom: 1px solid #d2000073; }
         .olivia-dosalga-title { margin: 0; color: #fff; font-size: 18px; font-weight: 900; line-height: 1.2; }
-        .olivia-dosalga-status { margin: 4px 0 0; color: rgba(255,255,255,.7); font-size: 13px; }
+        .olivia-dosalga-status { margin: 4px 0 0; color: rgba(255,255,255,.7); font-size: 13px; }.olivia-dosalga-status:before{content:'';display:inline-block;width:8px;height:8px;margin-right:7px;border-radius:50%;background:#22c55e;box-shadow:0 0 0 4px #22c55e25}
         .olivia-dosalga-close,.olivia-dosalga-toggle,.olivia-dosalga-teaser,.olivia-dosalga-lead button,.olivia-dosalga-composer button { border: 0; cursor: pointer; font: inherit; }
-        .olivia-dosalga-close { width: 38px; height: 38px; border-radius: 12px; background: rgba(255,255,255,.18); color: #fff; font-weight: 900; }
-        .olivia-dosalga-messages { flex: 1; min-height: 180px; overflow-y: auto; padding: 16px; background: linear-gradient(rgba(255,255,255,.04) 1px, transparent 1px), #111; background-size: 100% 42px; }
-        .olivia-dosalga-message { width: fit-content; max-width: 88%; margin: 0 0 10px; padding: 11px 13px; border-radius: 16px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; }
-        .olivia-dosalga-message.assistant { background: rgba(255,255,255,.1); color: #fff; }
-        .olivia-dosalga-message.user { margin-left: auto; background: #fff; color: #111; }
+        .olivia-dosalga-close { width: 34px; height: 34px; border-radius: 50%; background: rgba(255,255,255,.15); color: #fff; font-weight: 900; }
+        .olivia-dosalga-messages { flex: 1; min-height: 180px; overflow-y: auto; padding: 17px; background: #171717; }
+        .olivia-dosalga-message { width: fit-content; max-width: 88%; margin: 0 0 10px; padding: 11px 13px; border-radius: 18px 18px 18px 6px; font-size: 14px; line-height: 1.45; white-space: pre-wrap; box-shadow:0 8px 18px #0003; animation:olivia-msg .25s ease both; }
+        .olivia-dosalga-message.assistant { background: #2a2a2a; color: #fff; }
+        .olivia-dosalga-message.user { margin-left: auto; background: #d20000; color: #fff; border-radius:18px 18px 6px 18px; }
         .olivia-dosalga-lead { display: grid; grid-template-columns: 1fr 1fr; gap: 9px; padding: 14px; background: #181818; border-top: 1px solid rgba(255,255,255,.1); }
         .olivia-dosalga-lead p,.olivia-dosalga-lead button { grid-column: 1 / -1; }
         .olivia-dosalga-lead p { margin: 0; color: rgba(255,255,255,.72); font-size: 13px; line-height: 1.4; }
         .olivia-dosalga-lead input,.olivia-dosalga-composer input { width: 100%; min-width: 0; border: 1px solid rgba(255,255,255,.25); border-radius: 12px; background: rgba(255,255,255,.08); color: #fff; font: inherit; font-size: 14px; outline: none; }
         .olivia-dosalga-lead input { padding: 11px; }
         .olivia-dosalga-lead input::placeholder,.olivia-dosalga-composer input::placeholder { color: rgba(255,255,255,.58); }
-        .olivia-dosalga-lead button,.olivia-dosalga-composer button,.olivia-dosalga-toggle { background: #fff; color: #111; font-weight: 900; }
+        .olivia-dosalga-lead button,.olivia-dosalga-composer button,.olivia-dosalga-toggle { background: #d20000; color: #fff; font-weight: 900; }
         .olivia-dosalga-lead button { padding: 12px 14px; border-radius: 12px; }
         .olivia-dosalga-composer { display: grid; grid-template-columns: 1fr 52px; gap: 9px; padding: 14px; background: #121214; border-top: 1px solid rgba(255,255,255,.1); }
         .olivia-dosalga-privacy { padding: 10px 14px 0; background: #121214; color: rgba(255,255,255,.72); font-size: 12px; line-height: 1.35; }
@@ -344,8 +344,9 @@ export default function OliviaChatDosalga() {
         .olivia-dosalga-composer button { border-radius: 12px; font-size: 20px; }
         .olivia-dosalga-composer button:disabled,.olivia-dosalga-lead button:disabled,.olivia-dosalga-composer input:disabled { opacity: .58; cursor: not-allowed; }
         .olivia-dosalga-closed { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; }
-        .olivia-dosalga-teaser { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid rgba(255,255,255,.3); border-radius: 999px; background: #121214; color: #fff; box-shadow: 0 18px 42px rgba(0,0,0,.35); }
-        .olivia-dosalga-avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #fff; color: #111; font-weight: 900; }
+        .olivia-dosalga-teaser { display: flex; align-items: center; gap: 10px; padding: 10px 14px; border: 1px solid #d2000080; border-radius: 999px; background: #111; color: #fff; box-shadow: 0 24px 42px -18px #0009,inset 0 1px #ffffff1a; font-weight:800; }
+        .olivia-dosalga-avatar { display: grid; place-items: center; width: 34px; height: 34px; border-radius: 50%; background: #d20000; color: #fff; font-weight: 900; }
+        @keyframes olivia-in{from{opacity:0;transform:translateY(24px) scale(.96)}to{opacity:1;transform:translateY(0) scale(1)}}@keyframes olivia-msg{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
         .olivia-dosalga-toggle { min-width: 78px; height: 68px; padding: 0 14px; border-radius: 999px; box-shadow: 0 16px 44px rgba(0,0,0,.42); }
         @media (max-width: 560px) { .olivia-dosalga-chat { right: 14px; bottom: 14px; } .olivia-dosalga-lead { grid-template-columns: 1fr; } }
       `}</style>
