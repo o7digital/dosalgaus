@@ -15,59 +15,59 @@ const HeroSlider = () => {
         en: [
             {
                 id: 1,
-                badge: "NEW ARRIVALS",
-                title: "Travel Better, Wherever You Go",
-                subtitle: "Practical luggage and smart accessories for every kind of journey.",
-                cta: "Shop Luggage",
+                badge: "THE COLLECTION",
+                title: "Everyday Style. Your Choice.",
+                subtitle: "Discover clothing for your daily routine. Compare styles, colors and available sizes to find your next piece.",
+                cta: "Shop Clothing",
                 image: "/slider/gemini1.png",
-                alt: "Travel essentials for journeys across the United States"
+                alt: "Everyday clothing from Dosalga"
             },
             {
                 id: 2,
-                badge: "NEW ARRIVALS",
-                title: "Pack More. Carry Smarter.",
-                subtitle: "Organizers, protective covers, and travel bags designed to simplify packing.",
-                cta: "Explore Accessories",
+                badge: "THE COLLECTION",
+                title: "The Details Make the Difference",
+                subtitle: "Take a closer look at product photos, listed materials and available options before you choose.",
+                cta: "Browse Products",
                 image: "/slider/gemini2.png",
-                alt: "Luggage and packing accessories for organized travel"
+                alt: "Dosalga clothing and product details"
             },
             {
                 id: 3,
-                badge: "NEW ARRIVALS",
-                title: "Ready for the Next Departure",
-                subtitle: "From quick getaways to longer trips, find the right luggage for the road ahead.",
+                badge: "THE COLLECTION",
+                title: "Find Your Next Favorite",
+                subtitle: "Explore the collection, check the fit and choose the pieces that work with your wardrobe.",
                 cta: "Discover Dosalga",
                 image: "/slider/gemini3.png",
-                alt: "Reliable travel luggage for short and long trips"
+                alt: "Everyday style from the Dosalga collection"
             }
         ],
         es: [
             {
                 id: 1,
-                badge: "NUEVAS LLEGADAS",
-                title: "Viaja mejor, vayas donde vayas",
-                subtitle: "Maletas prácticas y accesorios inteligentes para cada tipo de viaje.",
-                cta: "Comprar maletas",
+                badge: "LA COLECCIÓN",
+                title: "Tu estilo, todos los días",
+                subtitle: "Descubre prendas para tu rutina. Compara estilos, colores y tallas disponibles para elegir tu próxima pieza.",
+                cta: "Comprar ropa",
                 image: "/slider/gemini1.png",
-                alt: "Equipaje práctico para viajar por Estados Unidos"
+                alt: "Ropa Dosalga para el día a día"
             },
             {
                 id: 2,
-                badge: "NUEVAS LLEGADAS",
-                title: "Organiza más. Carga mejor.",
-                subtitle: "Organizadores, fundas y bolsas de viaje que simplifican tu equipaje.",
-                cta: "Explorar accesorios",
+                badge: "LA COLECCIÓN",
+                title: "Los detalles hacen la diferencia",
+                subtitle: "Mira de cerca las fotografías, los materiales indicados y las opciones disponibles antes de elegir.",
+                cta: "Ver productos",
                 image: "/slider/gemini2.png",
-                alt: "Maletas y accesorios para organizar cada viaje"
+                alt: "Prendas y detalles de productos Dosalga"
             },
             {
                 id: 3,
-                badge: "NUEVAS LLEGADAS",
-                title: "Listo para la próxima salida",
-                subtitle: "Encuentra el equipaje adecuado para una escapada o un viaje más largo.",
+                badge: "LA COLECCIÓN",
+                title: "Encuentra tu próxima prenda favorita",
+                subtitle: "Explora la colección, revisa las medidas y elige las piezas que combinan con tu guardarropa.",
                 cta: "Descubrir Dosalga",
                 image: "/slider/gemini3.png",
-                alt: "Equipaje confiable para viajes cortos y largos"
+                alt: "Estilo cotidiano de la colección Dosalga"
             }
         ],
         de: [

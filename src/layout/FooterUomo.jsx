@@ -13,8 +13,8 @@ const FooterUomo = () => {
 
     const labels = {
         description: {
-            en: 'Travel-ready luggage and practical accessories for every journey.',
-            es: 'Maletas y accesorios de viaje prácticos para cada trayecto.',
+            en: 'Clothing and everyday products, with product details and customer support to help you choose.',
+            es: 'Ropa y productos para el día a día, con información y atención al cliente para ayudarte a elegir.',
             de: 'Premium-Sportbekleidung und Active-Lifestyle-Produkte für alle.',
             fr: 'Vêtements de sport premium et produits lifestyle pour tous.',
             it: 'Activewear premium e prodotti lifestyle per tutti.',
@@ -29,8 +29,8 @@ const FooterUomo = () => {
             pt: 'Palavras-chave',
         },
         keywords: {
-            en: 'luggage, suitcases, travel bags, packing organizers, luggage covers, carry-on accessories',
-            es: 'maletas, equipaje, bolsas de viaje, organizadores, fundas para maletas, accesorios de viaje',
+            en: 'Dosalga clothing, everyday style, jackets, online shopping, product information',
+            es: 'ropa Dosalga, estilo cotidiano, chaquetas, compras en línea, información de productos',
             de: 'Fitnessbekleidung Miami Florida, Fitnessbekleidung Shop Miami Florida, Damen Fitnessbekleidung Miami Florida, Herren Fitnessbekleidung Miami Florida, Trainingsbekleidung Miami Florida, Sportbekleidung Fitness Miami Florida, Premium Fitnessbekleidung Miami Florida, Performance Fitnessbekleidung Miami Florida, Yoga Fitnessbekleidung Miami Florida, Lauf Fitnessbekleidung Miami Florida, Fitnessbekleidung Mexiko-Stadt, Fitnessbekleidung CDMX, Fitnessbekleidung Shop Mexiko-Stadt, Damen Fitnessbekleidung CDMX, Herren Fitnessbekleidung CDMX, Trainingsbekleidung Mexiko-Stadt, Sportbekleidung Fitness CDMX, Premium Fitnessbekleidung Mexiko-Stadt, Performance Fitnessbekleidung CDMX, Yoga Fitnessbekleidung CDMX',
             fr: 'vêtements fitness Miami Florida, boutique de vêtements fitness Miami Florida, vêtements de gym femme Miami Florida, vêtements de gym homme Miami Florida, vêtements d\'entraînement Miami Florida, vêtements de sport fitness Miami Florida, vêtements fitness premium Miami Florida, vêtements fitness performance Miami Florida, vêtements de yoga fitness Miami Florida, vêtements fitness running Miami Florida, vêtements fitness Mexico City, vêtements fitness CDMX, boutique de vêtements fitness Mexico City, vêtements de gym femme CDMX, vêtements de gym homme CDMX, vêtements d\'entraînement Mexico City, vêtements de sport fitness CDMX, vêtements fitness premium Mexico City, vêtements fitness performance CDMX, vêtements de yoga fitness CDMX',
             it: 'abbigliamento fitness Miami Florida, negozio abbigliamento fitness Miami Florida, abbigliamento palestra donna Miami Florida, abbigliamento palestra uomo Miami Florida, abbigliamento da allenamento Miami Florida, abbigliamento sportivo fitness Miami Florida, abbigliamento fitness premium Miami Florida, abbigliamento fitness performance Miami Florida, abbigliamento yoga fitness Miami Florida, abbigliamento running fitness Miami Florida, abbigliamento fitness Città del Messico, abbigliamento fitness CDMX, negozio abbigliamento fitness Città del Messico, abbigliamento palestra donna CDMX, abbigliamento palestra uomo CDMX, abbigliamento da allenamento Città del Messico, abbigliamento sportivo fitness CDMX, abbigliamento fitness premium Città del Messico, abbigliamento fitness performance CDMX, abbigliamento yoga fitness CDMX',

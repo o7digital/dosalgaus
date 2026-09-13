@@ -24,8 +24,8 @@ const MainLayoutUomo = ({ children }) => {
   return (
     <>
       <Head>
-        <title>Dosalga USA - Luggage & Travel Accessories</title>
-        <meta name="description" content="Shop luggage, suitcases, travel bags, packing organizers, and practical travel accessories at Dosalga USA." />
+        <title>Dosalga USA - Clothing & Everyday Style</title>
+        <meta name="description" content="Explore Dosalga clothing and everyday products. Review product details and available options before ordering." />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/assets/img/sm-logo.svg" />
       </Head>

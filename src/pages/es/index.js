@@ -12,13 +12,13 @@ export default function HomeEs() {
     return `${siteUrl}/${locale}`;
   };
   const ogLocale = 'es_ES';
-  const keywords = 'maletas, equipaje, bolsas de viaje, organizadores de equipaje, fundas para maletas, accesorios de viaje';
+  const keywords = 'ropa Dosalga, estilo cotidiano, chaquetas, compras en línea, información de productos';
 
   return (
     <>
       <Head>
-        <title>Dosalga USA - Maletas, equipaje y accesorios de viaje</title>
-        <meta name="description" content="Compra maletas, bolsas de viaje, organizadores, fundas protectoras y accesorios prácticos para viajar en Dosalga USA." />
+        <title>Dosalga USA - Ropa y estilo para todos los días</title>
+        <meta name="description" content="Descubre ropa y productos para el día a día en Dosalga USA. Compara fotografías, características y opciones disponibles, con atención para tu pedido." />
         <meta name="keywords" content={keywords} />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         <link rel="icon" href="/assets/img/sm-logo.svg" />

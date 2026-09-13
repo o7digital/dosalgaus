@@ -6,8 +6,8 @@ export default function HomeEn() {
   return (
     <>
       <Head>
-        <title>Dosalga USA - Luggage, Suitcases & Travel Accessories</title>
-        <meta name="description" content="Shop luggage, suitcases, travel bags, packing organizers, protective covers, and practical travel accessories at Dosalga USA." />
+        <title>Dosalga USA - Clothing & Everyday Style</title>
+        <meta name="description" content="Explore Dosalga clothing and everyday products. Compare photos, product details and available options, with support for your order." />
         <link rel="canonical" href="https://www.dosalga.store/" />
         <link rel="alternate" hrefLang="en" href="https://www.dosalga.store/" />
         <link rel="alternate" hrefLang="es" href="https://www.dosalga.store/es" />

@@ -1,5 +1,5 @@
-import TravelServicesPage from '../../components/common/TravelServicesPage';
+import CustomerServicesPage from '../../components/common/CustomerServicesPage';
 
 export default function ServicesPageEs() {
-  return <TravelServicesPage language="es" />;
+  return <CustomerServicesPage language="es" />;
 }

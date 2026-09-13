@@ -26,14 +26,14 @@ export default function App({ Component, pageProps }) {
   return (
     <>
       <Head>
-        <title>DOSALGA USA - Luggage & Travel Accessories</title>
+        <title>DOSALGA USA - Clothing & Everyday Style</title>
         <meta charSet="UTF-8" />
         <meta httpEquiv="X-UA-Compatible" content="IE=edge"></meta>
         <meta
           name="viewport"
           content="width=device-width, initial-scale=1.0"
         ></meta>
-        <meta name="description" content="DOSALGA USA offers luggage, suitcases, travel bags, packing organizers, and practical travel accessories." />
+        <meta name="description" content="Shop clothing and everyday products at Dosalga USA, with product information and customer support before and after your purchase." />
       </Head>
       <Script
         id="Cookiebot"

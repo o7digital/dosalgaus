@@ -7,7 +7,7 @@ export default function Document() {
     "name": "Dosalga",
     "url": "https://www.dosalga.store",
     "logo": "https://www.dosalga.store/assets/img/sm-logo.svg",
-    "description": "Luggage, suitcases, travel bags, organizers, and practical travel accessories for customers in the United States.",
+    "description": "Online store offering clothing and everyday products, with product information and customer support for shoppers in the United States.",
     "contactPoint": {
       "@type": "ContactPoint",
       "contactType": "customer service",
