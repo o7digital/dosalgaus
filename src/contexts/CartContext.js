@@ -2,6 +2,7 @@
  * Context pour gérer le panier d'achats
  */
 import React, { createContext, useContext, useState, useEffect } from 'react';
+import { ONLINE_SALES_ENABLED } from '../lib/storefront';
 
 const CartContext = createContext();
 const DEFAULT_COUPON_LABEL = 'Remise socios';
@@ -73,6 +74,7 @@ export const CartProvider = ({ children }) => {
 
   // Ajouter un produit au panier
   const addToCart = (product, quantity = 1, variation = null) => {
+    if (!ONLINE_SALES_ENABLED) return;
     setCart((prevCart) => {
       const existingItemIndex = prevCart.findIndex(
         (item) => 
@@ -208,6 +210,9 @@ export const CartProvider = ({ children }) => {
 
   // Créer une commande WooCommerce
   const createOrder = async (billingInfo, shippingInfo = null, checkoutOptions = {}) => {
+    if (!ONLINE_SALES_ENABLED) {
+      throw new Error('Online sales are currently unavailable.');
+    }
     setIsLoading(true);
     try {
       if (cart.length === 0 || getCartTotalAfterDiscount() <= 0) {

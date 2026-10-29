@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import Link from "next/link";
 import { useRouter } from "next/router";
 import CartUomo from '../components/common/CartUomo';
+import { ONLINE_SALES_ENABLED } from '../lib/storefront';
 import LanguageSwitcher from '../components/common/LanguageSwitcher';
 
 const HeaderUomo = () => {
@@ -125,9 +126,9 @@ const HeaderUomo = () => {
                             </div>
 
                             {/* Cart */}
-                            <div className="header-action-btn cart-wrapper">
+                            {ONLINE_SALES_ENABLED && <div className="header-action-btn cart-wrapper">
                                 <CartUomo/>
-                            </div>
+                            </div>}
 
                             {/* Mobile Menu Toggle */}
                             <button 

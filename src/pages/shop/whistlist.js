@@ -1,5 +1,7 @@
 import React from 'react';
 import Link from 'next/link';
+import ProductLink from '@/src/components/common/ProductLink';
+import { ONLINE_SALES_ENABLED } from '@/src/lib/storefront';
 import { useRouter } from 'next/router';
 import { useWishlist } from '@/src/contexts/WishlistContext';
 import { formatLocalizedPrice } from '@/src/lib/pricing';
@@ -88,9 +90,9 @@ const Whistlist = () => {
                             </div>
                             <div className="product-content">
                               <h6>
-                                <Link legacyBehavior href={productUrl}>
+                                <ProductLink href={productUrl}>
                                   <a>{item.name}</a>
-                                </Link>
+                                </ProductLink>
                               </h6>
                             </div>
                           </td>
@@ -103,11 +105,11 @@ const Whistlist = () => {
                             <span>{item.stock_status === 'instock' ? t('In Stock', 'En stock', 'Auf Lager', 'En stock', 'Disponibile', 'Em estoque') : t('Out of stock', 'Agotado', 'Nicht verfügbar', 'Rupture', 'Non disponibile', 'Sem estoque')}</span>
                           </td>
                           <td>
-                            <Link legacyBehavior href={productUrl}>
+                            {ONLINE_SALES_ENABLED && <ProductLink href={productUrl}>
                               <a className="add-cart-btn hover-btn2">
                                 <i className="bi bi-eye" /> {t('View', 'Ver', 'Ansehen', 'Voir', 'Vedi', 'Ver')}
                               </a>
-                            </Link>
+                            </ProductLink>}
                           </td>
                         </tr>
                       );

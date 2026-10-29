@@ -1,5 +1,6 @@
 import { getWooProductMXNPrice } from '@/src/lib/pricing';
 import { getWooCommerceErrorDetails } from '@/src/lib/woocommerce';
+import { ONLINE_SALES_ENABLED } from '@/src/lib/storefront';
 
 const FALLBACK_WORDPRESS_URL = 'https://oliviers44.sg-host.com';
 
@@ -731,6 +732,14 @@ const createUsdRestOrder = async ({
 };
 
 export default async function handler(req, res) {
+  if (!ONLINE_SALES_ENABLED) {
+    return res.status(403).json({
+      success: false,
+      code: 'online_sales_disabled',
+      message: 'Online sales are currently unavailable.',
+    });
+  }
+
   const debugId = `co_${Date.now()}_${Math.random().toString(36).slice(2, 8)}`;
 
   if (req.method !== 'POST') {

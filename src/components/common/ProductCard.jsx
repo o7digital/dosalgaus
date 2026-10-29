@@ -1,5 +1,7 @@
 import React, { useEffect, useMemo, useState } from 'react';
 import Link from 'next/link';
+import ProductLink from './ProductLink';
+import { ONLINE_SALES_ENABLED } from '@/src/lib/storefront';
 import { useRouter } from 'next/router';
 import { useCountdownTimer } from '@/src/hooks/useCountdownTimer';
 import { useWishlist } from '@/src/contexts/WishlistContext';
@@ -110,14 +112,16 @@ const ProductCard = ({ product, showCountdown = false, detailHref = null, onImag
 
   // Liens de partage
   const shareLinks = useMemo(() => {
-    const url = encodeURIComponent(`https://www.dosalga.store/shop/product/${id}`);
+    const url = encodeURIComponent(ONLINE_SALES_ENABLED
+      ? `https://www.dosalga.store/shop/product/${id}`
+      : `https://www.dosalga.store${localePrefix}/shop`);
     const text = encodeURIComponent(name);
     return {
       twitter: `https://twitter.com/intent/tweet?url=${url}&text=${text}`,
       facebook: `https://www.facebook.com/sharer/sharer.php?u=${url}`,
       whatsapp: `https://api.whatsapp.com/send?text=${text}%20${url}`,
     };
-  }, [id, name]);
+  }, [id, name, localePrefix]);
 
   const handleAddToCart = (e) => {
     e.preventDefault();
@@ -147,7 +151,7 @@ const ProductCard = ({ product, showCountdown = false, detailHref = null, onImag
     <>
     <div className="product-card hover-btn">
       <div className="product-card-img double-img">
-        <Link legacyBehavior href={productLink}>
+        <ProductLink href={productLink}>
           <a>
             <img
               src={mainImage}
@@ -190,18 +194,18 @@ const ProductCard = ({ product, showCountdown = false, detailHref = null, onImag
               </div>
             )}
           </a>
-        </Link>
+        </ProductLink>
 
         {/* Overlay avec bouton panier */}
-        <div className="overlay">
+        {ONLINE_SALES_ENABLED && <div className="overlay">
           <div className="cart-area">
             {stock_status === 'instock' ? (
               type === 'variable' || !purchasable || !price ? (
-                <Link legacyBehavior href={productLink}>
+                <ProductLink href={productLink}>
                   <a className="hover-btn3 add-cart-btn">
                     {isSpanish ? 'Ver producto' : 'View product'}
                   </a>
-                </Link>
+                </ProductLink>
               ) : (
                 <a 
                   href="#" 
@@ -212,14 +216,14 @@ const ProductCard = ({ product, showCountdown = false, detailHref = null, onImag
                 </a>
               )
             ) : (
-              <Link legacyBehavior href={productLink}>
+              <ProductLink href={productLink}>
                 <a className="hover-btn3 add-cart-btn">
                   {isSpanish ? 'Notificarme' : 'Notify me'}
                 </a>
-              </Link>
+              </ProductLink>
             )}
           </div>
-        </div>
+        </div>}
 
         {/* Actions (wishlist & quick view) */}
         <div className="view-and-favorite-area">
@@ -253,7 +257,7 @@ const ProductCard = ({ product, showCountdown = false, detailHref = null, onImag
                 </svg>
               </button>
             </li>
-            <li>
+            {ONLINE_SALES_ENABLED && <li>
               <a 
                 href="#"
                 onClick={(e) => {
@@ -267,7 +271,7 @@ const ProductCard = ({ product, showCountdown = false, detailHref = null, onImag
                   <path d="M10.9999 6.64832C8.60039 6.64832 6.64819 8.60051 6.64819 11C6.64819 13.3994 8.60039 15.3516 10.9999 15.3516C13.3993 15.3516 15.3515 13.3994 15.3515 11C15.3515 8.60051 13.3993 6.64832 10.9999 6.64832ZM10.9999 13.9011C9.40013 13.9011 8.09878 12.5997 8.09878 11C8.09878 9.40029 9.40017 8.0989 10.9999 8.0989C12.5995 8.0989 13.9009 9.40029 13.9009 11C13.9009 12.5997 12.5996 13.9011 10.9999 13.9011Z" />
                 </svg>
               </a>
-            </li>
+            </li>}
           </ul>
         </div>
 
@@ -282,9 +286,9 @@ const ProductCard = ({ product, showCountdown = false, detailHref = null, onImag
       {/* Contenu de la carte */}
       <div className="product-card-content">
         <h6>
-          <Link legacyBehavior href={productLink}>
+          <ProductLink href={productLink}>
             <a className="hover-underline">{name}</a>
-          </Link>
+          </ProductLink>
         </h6>
         <p>
           <Link legacyBehavior href={`/category/${categories[0]?.slug || ''}`}>

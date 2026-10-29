@@ -1,7 +1,7 @@
-import Link from 'next/link';
 import React, { useEffect, useMemo, useRef, useState } from 'react';
 import { useRouter } from 'next/router';
-import ProductViewModal from '@/src/components/common/ProductViewModal';
+import ProductLink from '@/src/components/common/ProductLink';
+import { ONLINE_SALES_ENABLED } from '@/src/lib/storefront';
 import ProductCard from '@/src/components/common/ProductCard';
 import { useProducts } from '@/src/hooks/useProducts';
 import { useCategories } from '@/src/hooks/useCategories';
@@ -211,17 +211,17 @@ const ShopPage = () => {
               return (
                 <div className="top-product-widget mb-20" key={product.id}>
                   <div className="top-product-img">
-                    <Link legacyBehavior href={`${localePrefix}/shop/product/${product.id}`}>
+                    <ProductLink href={`${localePrefix}/shop/product/${product.id}`}>
                       <a>
                         <img src={image} alt={product.name} loading="lazy" decoding="async" />
                       </a>
-                    </Link>
+                    </ProductLink>
                   </div>
                   <div className="top-product-content">
                     <h6>
-                      <Link legacyBehavior href={`${localePrefix}/shop/product/${product.id}`}>
+                      <ProductLink href={`${localePrefix}/shop/product/${product.id}`}>
                         <a>{product.name}</a>
-                      </Link>
+                      </ProductLink>
                     </h6>
                     <span>{formatPrice(product.price)}</span>
                   </div>
@@ -330,7 +330,7 @@ const ShopPage = () => {
               ))}
             </div>
 
-            {!loading && !error && visibleProducts.length >= PRODUCTS_PER_PAGE && (
+            {ONLINE_SALES_ENABLED && !loading && !error && visibleProducts.length >= PRODUCTS_PER_PAGE && (
               <div className="text-center">
                 <button
                   type="button"
@@ -344,8 +344,6 @@ const ShopPage = () => {
           </div>
         </div>
       </div>
-
-      <ProductViewModal />
 
       <style jsx>{`
         .dosalga-filter-bar {
