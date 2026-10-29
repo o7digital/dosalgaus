@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const GarantiasPage = () => {
-  const siteUrl = "https://dosalga.store";
+  const siteUrl = "https://dosalga.com";
 
   return (
     <>

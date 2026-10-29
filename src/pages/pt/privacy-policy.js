@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const PrivacyPolicyPt = () => {
-  const siteUrl = "https://dosalga.store";
+  const siteUrl = "https://dosalga.com";
   const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
   const slugByLocale = { en: '/privacy-policy', es: '/privacy-policy', de: '/privacy-policy', fr: '/privacy-policy', it: '/privacy-policy', pt: '/privacy-policy' };
   const currentLocale = 'pt';

@@ -44,8 +44,10 @@ const ProductDefaultPage = () => {
   const router = useRouter();
   const { addToCart } = useCart();
   const supportedLocales = ['es', 'de', 'fr', 'it', 'pt'];
-  const localeSegment = router.pathname.split('/')[1];
-  const currentLang = supportedLocales.includes(localeSegment) ? localeSegment : 'en';
+  const localeSegment = router.asPath.split('?')[0].split('/')[1];
+  const currentLang = localeSegment === 'en'
+    ? 'en'
+    : supportedLocales.includes(localeSegment) ? localeSegment : 'en';
   const isSpanish = currentLang === 'es';
   const localePrefix = currentLang === 'en' ? '' : `/${currentLang}`;
   const formatPrice = (value) => formatLocalizedPrice(value, { pathname: router.pathname });
@@ -199,8 +201,10 @@ const ProductDefaultPage = () => {
     return text.length > 260 ? `${text.slice(0, 260).trim()}...` : text;
   }, [product?.description, product?.short_description]);
   const productDescription = useMemo(() => {
-    return product?.description || product?.short_description || '';
-  }, [product?.description, product?.short_description]);
+    return isSpanish
+      ? product?.short_description || product?.description || ''
+      : product?.description || product?.short_description || '';
+  }, [isSpanish, product?.description, product?.short_description]);
 
   const renderStars = () => {
     const stars = [];

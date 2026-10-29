@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const ImpuestosYArancelesPage = () => {
-  const siteUrl = "https://dosalga.store";
+  const siteUrl = "https://dosalga.com";
   const locales = ['en', 'es'];
   const slugByLocale = {
     en: '/taxes-and-duties',

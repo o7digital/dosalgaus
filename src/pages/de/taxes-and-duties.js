@@ -2,7 +2,7 @@ import React from "react";
 import Head from "next/head";
 
 const TaxesAndDutiesDePage = () => {
-  const siteUrl = "https://dosalga.store";
+  const siteUrl = "https://dosalga.com";
   const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
   const slugByLocale = {
     en: '/taxes-and-duties',

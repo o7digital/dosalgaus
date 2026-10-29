@@ -11,3 +11,4 @@ dosalga-back/
 dosalga-wp/wordpress/
 dosalga-wp/db_data/
 .vercel
+.env*

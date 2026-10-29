@@ -21,25 +21,25 @@ const LocalTaxesPage = () => {
                 </p>
 
                 <div className="policy-section mt-5">
-                  <h2>United States Orders</h2>
-                  <p>Orders shipped to the United States may be subject to:</p>
+                  <h2>Orders to Mexico</h2>
+                  <p>Orders delivered to Mexico may be subject to:</p>
                   <ul>
-                    <li>Sales tax or use tax, depending on state and local rules</li>
-                    <li>Import duties, tariffs, customs fees, or carrier brokerage fees</li>
-                    <li>Administrative fees charged by carriers or customs brokers</li>
+                    <li>Value Added Tax (VAT)</li>
+                    <li>Import duties</li>
+                    <li>Customs or administrative fees</li>
                   </ul>
                   <p>
-                    These charges may be determined by state or local tax rules, U.S. Customs and Border Protection, shipping
-                    carriers, or customs brokers. They are not included in the product price or shipping fee unless explicitly
-                    stated at checkout.
+                    These charges are determined by Mexican tax authorities, customs offices, or shipping carriers at the time of
+                    delivery. Dosalga has no control over these charges and cannot predict their amount. All such fees are the sole
+                    responsibility of the customer.
                   </p>
                 </div>
 
                 <div className="policy-section mt-5">
-                  <h2>No U.S. VAT</h2>
+                  <h2>Orders to the United States</h2>
                   <p>
-                    The United States does not use VAT in the same way as many other countries. For U.S. customers, applicable tax is
-                    generally sales tax or use tax, depending on the shipping address and applicable law.
+                    Orders shipped to the United States are not subject to U.S. sales tax, unless otherwise required by applicable
+                    law. Dosalga does not currently operate offices, warehouses, or physical inventory within the United States.
                   </p>
                 </div>
 
@@ -60,3 +60,4 @@ const LocalTaxesPage = () => {
 };
 
 export default LocalTaxesPage;
+

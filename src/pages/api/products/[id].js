@@ -2,9 +2,16 @@
  * API Route: /api/products/[id]
  * Récupère un produit par ID depuis WooCommerce
  */
-import { getProduct, getProductVariations } from '@/src/lib/woocommerce';
+import {
+  getProduct,
+  getProductVariations,
+  getWooCommerceErrorDetails,
+} from '@/src/lib/woocommerce';
 import { normalizeWooProductPricesToMXN, normalizeWooProductsPricesToMXN } from '@/src/lib/pricing';
-import { translateWooProductDescriptionsToSpanish } from '@/src/lib/productText';
+import {
+  translateWooProductDescriptionsToSpanish,
+  translateWooProductTextToEnglish,
+} from '@/src/lib/productText';
 import { isProductVisible } from '@/src/lib/productVisibility';
 
 export default async function handler(req, res) {
@@ -39,11 +46,20 @@ export default async function handler(req, res) {
       variations = await getProductVariations(id);
     }
 
-    const productWithPrices = normalizeWooProductPricesToMXN(product);
-    const normalizedProduct = String(lang).toLowerCase() === 'en'
-      ? productWithPrices
-      : translateWooProductDescriptionsToSpanish(productWithPrices);
-    const normalizedVariations = normalizeWooProductsPricesToMXN(variations);
+    const productWithReviews = {
+      ...product,
+      reviews: [],
+    };
+    const productWithMxnPrices = normalizeWooProductPricesToMXN(productWithReviews);
+    const normalizedProduct = String(lang).toLowerCase() === 'es'
+      ? translateWooProductDescriptionsToSpanish(productWithMxnPrices)
+      : translateWooProductTextToEnglish(productWithMxnPrices);
+    const normalizedVariations = normalizeWooProductsPricesToMXN(
+      variations.map((variation) => ({
+        ...variation,
+        reviews: productWithReviews.reviews,
+      }))
+    );
 
     res.status(200).json({
       success: true,
@@ -53,7 +69,7 @@ export default async function handler(req, res) {
       }
     });
   } catch (error) {
-    console.error(`Error fetching product ${id}:`, error);
+    console.error(`Error fetching product ${id}:`, getWooCommerceErrorDetails(error));
     res.status(500).json({ 
       success: false,
       message: 'Erreur lors de la récupération du produit',

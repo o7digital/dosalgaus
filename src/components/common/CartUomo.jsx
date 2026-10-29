@@ -50,6 +50,8 @@ const CartUomo = () => {
 
   const itemCount = mounted ? getCartItemsCount() : 0;
   const totalPrice = mounted ? getCartTotal() : 0;
+  const isEnglish = router.asPath.split('?')[0].split('/')[1] === 'en';
+  const shopPath = isEnglish ? '/en/shop' : '/shop';
   const formatPrice = (value) => formatLocalizedPrice(value, { pathname: router.pathname });
 
   return (
@@ -120,10 +122,10 @@ const CartUomo = () => {
           </div>
           
           <div className="cart-actions">
-            <Link legacyBehavior href="/shop">
+            <Link legacyBehavior href={shopPath}>
               <a className="btn-secondary">Continue Shopping</a>
             </Link>
-            <Link legacyBehavior href="/shop/checkout">
+            <Link legacyBehavior href={`${shopPath}/checkout`}>
               <a className="btn-primary">Product Checkout</a>
             </Link>
           </div>

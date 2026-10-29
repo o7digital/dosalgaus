@@ -24,6 +24,8 @@ const Cart = () => {
   const discount = getDiscountAmount();
   const shipping = 0;
   const total = getCartTotalAfterDiscount() + shipping;
+  const isEnglish = router.asPath.split('?')[0].split('/')[1] === 'en';
+  const shopPath = isEnglish ? '/en/shop' : '/shop';
   const formatPrice = (value) => formatLocalizedPrice(value, { pathname: router.pathname });
 
   const handleApplyCoupon = async (event) => {
@@ -54,7 +56,7 @@ const Cart = () => {
                       <tr>
                         <td colSpan={5} className="text-center py-5">
                           Your cart is empty.{' '}
-                          <Link legacyBehavior href="/shop">
+                          <Link legacyBehavior href={shopPath}>
                             <a className="hover-underline">Continue shopping</a>
                           </Link>
                         </td>
@@ -207,7 +209,7 @@ const Cart = () => {
                 </p>
               )}
 
-              <Link legacyBehavior href="/shop/checkout">
+              <Link legacyBehavior href={`${shopPath}/checkout`}>
                 <a className="primary-btn1 hover-btn3">Product Checkout</a>
               </Link>
             </div>

@@ -4,68 +4,68 @@
   
   <!-- Home Page - English -->
   <url>
-    <loc>https://dosalga.store/</loc>
+    <loc>https://dosalga.com/</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.store/" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.store/es" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.store/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.com/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.com/es" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.com/" />
   </url>
   
   <!-- Home Page - Spanish -->
   <url>
-    <loc>https://dosalga.store/es</loc>
+    <loc>https://dosalga.com/es</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>daily</changefreq>
     <priority>1.0</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.store/" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.store/es" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.store/" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.com/" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.com/es" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.com/" />
   </url>
   
   <!-- About Us - English -->
   <url>
-    <loc>https://dosalga.store/about-us</loc>
+    <loc>https://dosalga.com/about-us</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.store/about-us" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.store/es/about-us" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.store/about-us" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.com/about-us" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.com/es/about-us" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.com/about-us" />
   </url>
   
   <!-- About Us - Spanish -->
   <url>
-    <loc>https://dosalga.store/es/about-us</loc>
+    <loc>https://dosalga.com/es/about-us</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.store/about-us" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.store/es/about-us" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.store/about-us" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.com/about-us" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.com/es/about-us" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.com/about-us" />
   </url>
   
   <!-- Contact - English -->
   <url>
-    <loc>https://dosalga.store/contact</loc>
+    <loc>https://dosalga.com/contact</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.store/contact" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.store/es/contact" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.store/contact" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.com/contact" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.com/es/contact" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.com/contact" />
   </url>
   
   <!-- Contact - Spanish -->
   <url>
-    <loc>https://dosalga.store/es/contact</loc>
+    <loc>https://dosalga.com/es/contact</loc>
     <lastmod>2025-12-15</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
-    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.store/contact" />
-    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.store/es/contact" />
-    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.store/contact" />
+    <xhtml:link rel="alternate" hreflang="en" href="https://dosalga.com/contact" />
+    <xhtml:link rel="alternate" hreflang="es" href="https://dosalga.com/es/contact" />
+    <xhtml:link rel="alternate" hreflang="x-default" href="https://dosalga.com/contact" />
   </url>
 
 </urlset>

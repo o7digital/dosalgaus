@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import Link from 'next/link';
 import React from 'react';
 
 const ALL_LANGUAGES = ['en', 'es', 'de', 'fr', 'it', 'pt'];
@@ -9,21 +8,33 @@ const LanguageSwitcher = () => {
   const router = useRouter();
 
   const currentLang = (() => {
-    const seg = router.pathname.split('/')[1];
+    const seg = router.asPath.split('?')[0].split('/')[1];
     return ALL_LANGUAGES.includes(seg) ? seg : 'en';
   })();
 
-  const buildPath = (targetLang) => {
-    const segments = router.asPath.split('/');
-    if (ALL_LANGUAGES.includes(segments[1])) {
-      segments[1] = targetLang === 'en' ? '' : targetLang;
-    } else if (targetLang !== 'en') {
-      segments.splice(1, 0, targetLang);
-    } else {
-      return router.asPath || '/';
+  const buildPath = (targetLang, sourcePath = router.asPath) => {
+    const [pathWithQuery, hash = ''] = sourcePath.split('#');
+    const [pathname, query = ''] = pathWithQuery.split('?');
+    const segments = pathname.split('/').filter(Boolean);
+
+    if (ALL_LANGUAGES.includes(segments[0])) {
+      segments.shift();
     }
-    const path = segments.filter(Boolean).join('/');
-    return `/${path}`;
+
+    if (targetLang !== 'en') {
+      segments.unshift(targetLang);
+    }
+
+    const path = `/${segments.join('/')}`;
+    return `${path}${query ? `?${query}` : ''}${hash ? `#${hash}` : ''}`;
+  };
+
+  const switchLanguage = (targetLang) => {
+    const browserPath = typeof window === 'undefined'
+      ? router.asPath
+      : `${window.location.pathname}${window.location.search}${window.location.hash}`;
+
+    router.push(buildPath(targetLang, browserPath));
   };
 
   return (
@@ -37,8 +48,10 @@ const LanguageSwitcher = () => {
         const active = currentLang === lang;
         const label = lang.toUpperCase();
         return (
-          <Link href={buildPath(lang)} key={lang}>
-            <button
+          <button
+              key={lang}
+              type="button"
+              onClick={() => switchLanguage(lang)}
               className={`lang-btn ${active ? 'active' : ''}`}
               style={{
                 padding: '5px 10px',
@@ -52,9 +65,8 @@ const LanguageSwitcher = () => {
                 transition: 'all 0.2s ease'
               }}
             >
-              {label}
-            </button>
-          </Link>
+            {label}
+          </button>
         );
       })}
     </div>

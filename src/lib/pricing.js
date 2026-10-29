@@ -10,9 +10,9 @@ export const parsePriceValue = (value) => {
   return Number.isFinite(numeric) ? numeric : null;
 };
 
-const DEFAULT_MXN_PER_USD = 17.5;
+const DEFAULT_MXN_PER_USD = 17.49;
 const PRICE_FIELDS = ['price', 'regular_price', 'sale_price'];
-const STORE_CURRENCY = 'USD';
+const MXN_IMPORT_CUTOFF = '2026-08-03T00:00:00';
 
 export const getMXNPerUSD = () => {
   const configuredRate = parsePriceValue(process.env.NEXT_PUBLIC_MXN_PER_USD);
@@ -21,6 +21,10 @@ export const getMXNPerUSD = () => {
 
 export const getWordPressPriceSourceCurrency = () => {
   return String(process.env.NEXT_PUBLIC_WP_PRICE_SOURCE_CURRENCY || 'USD').trim().toUpperCase();
+};
+
+export const getStoreCurrency = () => {
+  return String(process.env.NEXT_PUBLIC_STORE_CURRENCY || 'MXN').trim().toUpperCase();
 };
 
 export const convertUSDToMXN = (value) => {
@@ -39,40 +43,111 @@ export const normalizeStorePrice = getStoreMXNPrice;
 
 export const getStoreLocaleFromPath = (pathname = '') => {
   const segment = String(pathname || '').split('/')[1];
-  return segment === 'en' ? 'en' : 'es';
+  return segment === 'es' ? 'es' : 'en';
 };
 
-export const formatUSDPrice = (value, options = {}) => {
-  const { includeCode = true, fallback = includeCode ? '$0.00 USD' : '$0.00' } = options;
-  const usd = getStoreMXNPrice(value);
+export const formatMXNPrice = (value, options = {}) => {
+  const { includeCode = true, fallback = includeCode ? '$0.00 MXN' : '$0.00' } = options;
+  const mxn = getStoreMXNPrice(value);
 
-  if (usd === null) return fallback;
+  if (mxn === null) return fallback;
 
-  const formatted = `$${usd.toLocaleString('en-US', {
+  const formatted = `$${mxn.toLocaleString('en-US', {
     minimumFractionDigits: 2,
     maximumFractionDigits: 2,
   })}`;
 
-  return includeCode ? `${formatted} ${STORE_CURRENCY}` : formatted;
+  const currency = getStoreCurrency();
+  return includeCode ? `${formatted} ${currency}` : formatted;
 };
 
-export const formatMXNPrice = formatUSDPrice;
 export const getStoreUSDPrice = getStoreMXNPrice;
-export const formatUSDPriceFromMXN = formatUSDPrice;
+export const formatUSDPrice = formatMXNPrice;
+export const formatUSDPriceFromMXN = formatMXNPrice;
 export const getUSDPriceFromMXN = normalizeStorePrice;
 
 export const formatLocalizedPrice = (value, options = {}) => {
-  return formatUSDPrice(value, options);
+  return formatMXNPrice(value, options);
 };
 
-const formatWooPriceValue = (value) => {
+const getMetaValue = (product, key) => {
+  const entry = Array.isArray(product?.meta_data)
+    ? product.meta_data.find((meta) => meta?.key === key)
+    : null;
+
+  return entry?.value ?? null;
+};
+
+const normalizeCurrencyMarkerText = (value) => {
+  return String(value || '')
+    .replace(/<[^>]*>/g, ' ')
+    .replace(/&nbsp;/gi, ' ')
+    .trim()
+    .toUpperCase();
+};
+
+export const getProductCommentCurrency = (product) => {
+  const comments = [
+    product?.currency_comment,
+    product?.price_currency_comment,
+    ...(Array.isArray(product?.reviews) ? product.reviews : []),
+  ];
+
+  for (const comment of comments) {
+    const text = normalizeCurrencyMarkerText(
+      typeof comment === 'string'
+        ? comment
+        : comment?.review || comment?.content?.rendered || comment?.content
+    );
+
+    if (text.includes('MXN-PRICE') || text.includes('CURRENCY=MXN')) {
+      return 'MXN';
+    }
+
+    if (text.includes('CURRENCY=USD') || text.includes('USD-PRICE')) {
+      return 'USD';
+    }
+  }
+
+  return null;
+};
+
+export const isImportedMXNProduct = (product) => {
+  const commentCurrency = getProductCommentCurrency(product);
+
+  if (commentCurrency) {
+    return commentCurrency === 'MXN';
+  }
+
+  const sourceCurrency = String(getMetaValue(product, 'dosalga_price_source_currency') || '').trim().toUpperCase();
+
+  if (sourceCurrency === 'MXN') {
+    return true;
+  }
+
+  const rawDate = product?.date_created || product?.date_created_gmt;
+  if (!rawDate) {
+    return false;
+  }
+
+  return String(rawDate).slice(0, 19) >= MXN_IMPORT_CUTOFF;
+};
+
+export const getWooProductMXNPrice = (product, value) => {
   const numeric = parsePriceValue(value);
-  if (numeric === null) return value;
-  const usd = getWordPressPriceSourceCurrency() === 'MXN'
-    ? numeric / getMXNPerUSD()
-    : numeric;
-  if (usd === null) return value;
-  return usd.toFixed(2);
+  if (numeric === null) return null;
+
+  if (getStoreCurrency() === 'USD') {
+    return numeric / getMXNPerUSD();
+  }
+
+  return isImportedMXNProduct(product) ? numeric : numeric * getMXNPerUSD();
+};
+
+const formatWooPriceValue = (product, value) => {
+  const mxn = getWooProductMXNPrice(product, value);
+  if (mxn === null) return value;
+  return mxn.toFixed(2);
 };
 
 const normalizePriceField = (product, field) => {
@@ -87,7 +162,7 @@ const normalizePriceField = (product, field) => {
 
   return {
     ...product,
-    [field]: formatWooPriceValue(value),
+    [field]: formatWooPriceValue(product, value),
   };
 };
 
@@ -103,8 +178,8 @@ export const normalizeWooProductPricesToMXN = (product) => {
     price_html: '',
     meta_data: [
       ...(Array.isArray(product.meta_data) ? product.meta_data : []),
-      { key: 'dosalga_price_source_currency', value: getWordPressPriceSourceCurrency() },
-      { key: 'dosalga_price_display_currency', value: STORE_CURRENCY },
+      { key: 'dosalga_price_source_currency', value: isImportedMXNProduct(product) ? 'MXN' : 'USD' },
+      { key: 'dosalga_price_display_currency', value: 'MXN' },
       { key: 'dosalga_mxn_per_usd', value: String(getMXNPerUSD()) },
     ],
   };

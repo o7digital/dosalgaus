@@ -2,9 +2,9 @@
  * API Route: /api/categories
  * Récupère toutes les catégories depuis WooCommerce
  */
-import { getCategories } from '@/src/lib/woocommerce';
+import { getCategories, getWooCommerceErrorDetails } from '@/src/lib/woocommerce';
 import { isHiddenCreamCategory } from '@/src/lib/productVisibility';
-import { translateCategoriesToSpanish } from '@/src/lib/productText';
+import { normalizeCategoriesToEnglish, translateCategoriesToSpanish } from '@/src/lib/productText';
 
 export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store, max-age=0');
@@ -27,9 +27,9 @@ export default async function handler(req, res) {
     const filteredCategories = Array.isArray(categories)
       ? categories.filter((category) => !isHiddenCreamCategory(category))
       : [];
-    const visibleCategories = String(lang).toLowerCase() === 'en'
-      ? filteredCategories
-      : translateCategoriesToSpanish(filteredCategories);
+    const visibleCategories = String(lang).toLowerCase() === 'es'
+      ? translateCategoriesToSpanish(filteredCategories)
+      : normalizeCategoriesToEnglish(filteredCategories);
     
     res.status(200).json({
       success: true,
@@ -37,7 +37,7 @@ export default async function handler(req, res) {
       count: visibleCategories.length
     });
   } catch (error) {
-    console.error('Error fetching categories:', error);
+    console.error('Error fetching categories:', getWooCommerceErrorDetails(error));
     res.status(500).json({ 
       success: false,
       message: 'Erreur lors de la récupération des catégories',

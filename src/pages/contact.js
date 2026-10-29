@@ -1,54 +1,5 @@
-import React from 'react';
-import Head from 'next/head';
-import ContactForm from '@/src/components/common/ContactForm';
+import TravelContactPage from '../components/common/TravelContactPage';
 
-const ContactPage = () => {
-  const siteUrl = "https://dosalga.store";
-  const locales = ['en', 'es'];
-  const slugByLocale = {
-    en: '/contact',
-    es: '/contact',
-  };
-  const currentLocale = 'en';
-  const hrefFor = (locale) => `${siteUrl}${locale === 'en' ? '' : `/${locale}`}${slugByLocale[locale]}`;
-  const ogLocale = 'en_US';
-  const ogImage = `${siteUrl}/assets/img/sm-logo.svg`;
-  
-  return (
-    <>
-      <Head>
-        <title>Contact Dosalga - Customer Support & Inquiries | Get in Touch</title>
-        <meta name="description" content="Contact Dosalga customer support for inquiries about our premium activewear, sportswear products, orders, shipping, or returns. We're here to help you 24/7. Reach us by email or phone." />
-        <link rel="canonical" href={hrefFor(currentLocale)} />
-        
-        {/* Hreflang tags */}
-        {locales.map((locale) => (
-          <link key={locale} rel="alternate" hrefLang={locale} href={hrefFor(locale)} />
-        ))}
-        <link rel="alternate" hrefLang="x-default" href={hrefFor('en')} />
-        
-        {/* Open Graph */}
-        <meta property="og:locale" content={ogLocale} />
-        <meta property="og:type" content="website" />
-        <meta property="og:url" content={hrefFor(currentLocale)} />
-        <meta property="og:title" content="Contact Dosalga - Get in Touch" />
-        <meta property="og:description" content="Contact Dosalga for any inquiries about our premium activewear products. Reach us anytime." />
-        <meta property="og:site_name" content="Dosalga" />
-        <meta property="og:image" content={ogImage} />
-        <meta property="og:image:alt" content="Dosalga" />
-      </Head>
-      
-      <div className="contact-page pt-100 mb-100">
-        <div className="container">
-          <div className="row justify-content-center">
-            <div className="col-lg-8">
-              <ContactForm lang="en" />
-            </div>
-          </div>
-        </div>
-      </div>
-    </>
-  );
-};
-
-export default ContactPage;
+export default function ContactPage() {
+  return <TravelContactPage language="en" />;
+}

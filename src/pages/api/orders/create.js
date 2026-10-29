@@ -1,6 +1,7 @@
-import { getMXNPerUSD, getWordPressPriceSourceCurrency, parsePriceValue } from '@/src/lib/pricing';
+import { getWooProductMXNPrice } from '@/src/lib/pricing';
+import { getWooCommerceErrorDetails } from '@/src/lib/woocommerce';
 
-const FALLBACK_WORDPRESS_URL = 'https://oliviers55.sg-host.com';
+const FALLBACK_WORDPRESS_URL = 'https://oliviers44.sg-host.com';
 
 const normalizeHttpsBaseUrl = (value, fallback = FALLBACK_WORDPRESS_URL) => {
   try {
@@ -16,7 +17,7 @@ const WORDPRESS_URL = normalizeHttpsBaseUrl(process.env.NEXT_PUBLIC_WORDPRESS_UR
 const SOCIO_COUPON_CODE = String((process.env.SOCIO_COUPON_CODE || '2UP7NFF6')).trim().toUpperCase();
 const SOCIO_DISCOUNT_RATE = 0.50;
 const SOCIO_DISCOUNT_PERCENT = Math.round(SOCIO_DISCOUNT_RATE * 100);
-const STORE_CURRENCY = 'USD';
+const STORE_CURRENCY = String(process.env.NEXT_PUBLIC_STORE_CURRENCY || 'USD').trim().toUpperCase();
 const CHECKOUT_DEBUG = process.env.CHECKOUT_DEBUG === '1';
 
 const parseAmount = (value, fallback = 0) => {
@@ -176,7 +177,7 @@ const syncOrderTotalWithExpectedSubtotal = async ({ orderId, lineItems }) => {
 
   const keptFeeLines = Array.isArray(wcOrder?.fee_lines)
     ? wcOrder.fee_lines
-        .filter((feeLine) => feeLine?.name !== 'Dosalga USD price adjustment')
+        .filter((feeLine) => feeLine?.name !== 'Dosalga MXN price adjustment')
         .map((feeLine) => ({
           id: feeLine.id,
           name: feeLine.name,
@@ -189,7 +190,7 @@ const syncOrderTotalWithExpectedSubtotal = async ({ orderId, lineItems }) => {
     fee_lines: [
       ...keptFeeLines,
       {
-        name: 'Dosalga USD price adjustment',
+        name: 'Dosalga MXN price adjustment',
         total: adjustment.toFixed(2),
         taxable: false,
       },
@@ -530,7 +531,7 @@ const buildRestOrderLineItems = (lineItems = []) => (
   ))
 );
 
-const resolveLineItemsWithWooPrices = async ({ wcApi, lineItems = [], debugId }) => {
+const resolveLineItemsWithWooMXNPrices = async ({ wcApi, lineItems = [], debugId }) => {
   const resolvedItems = await Promise.all(lineItems.map(async (item) => {
     const productId = Number.parseInt(item?.product_id, 10);
     const variationId = Number.parseInt(item?.variation_id, 10);
@@ -542,10 +543,17 @@ const resolveLineItemsWithWooPrices = async ({ wcApi, lineItems = [], debugId })
         ? `products/${productId}/variations/${variationId}`
         : `products/${productId}`;
       const { data: wooProduct } = await wcApi.get(endpoint);
-      const wooRawPrice = parsePriceValue(wooProduct?.price || wooProduct?.regular_price || wooProduct?.sale_price);
-      const wooUsdPrice = getWordPressPriceSourceCurrency() === 'MXN'
-        ? wooRawPrice / getMXNPerUSD()
-        : wooRawPrice;
+      const reviewProductId = Number(wooProduct?.parent_id || productId);
+      const { data: reviews } = await wcApi.get('products/reviews', {
+        product: reviewProductId,
+        per_page: 100,
+      });
+      const wooProductWithReviews = {
+        ...wooProduct,
+        reviews: Array.isArray(reviews) ? reviews : [],
+      };
+      const wooPrice = parseAmount(wooProduct?.price || wooProduct?.regular_price || wooProduct?.sale_price, NaN);
+      const mxnPrice = getWooProductMXNPrice(wooProductWithReviews, wooPrice);
 
       console.info(`[checkout:${debugId}] product_resolved`, {
         requestedProductId: productId,
@@ -555,15 +563,15 @@ const resolveLineItemsWithWooPrices = async ({ wcApi, lineItems = [], debugId })
         wooType: wooProduct?.type || null,
         wooStatus: wooProduct?.status || null,
         wooPurchasable: wooProduct?.purchasable ?? null,
-        wooPrice: wooUsdPrice,
-        currency: STORE_CURRENCY,
+        wooPrice,
+        mxnPrice,
       });
 
-      if (!Number.isFinite(wooUsdPrice) || wooUsdPrice <= 0) return item;
+      if (!Number.isFinite(mxnPrice) || mxnPrice <= 0) return item;
 
       return {
         ...item,
-        unit_price: wooUsdPrice.toFixed(2),
+        unit_price: mxnPrice.toFixed(2),
       };
     } catch (error) {
       console.error(`[checkout:${debugId}] product_resolve_error`, {
@@ -597,12 +605,12 @@ const createUsdRestOrder = async ({
   const { default: wcApi } = await import('@/src/lib/woocommerce');
   const currency = normalizeCurrencyCode(requestedCurrency);
   const normalizedCouponCode = normalizeCouponCode(couponCode);
-  const resolvedLineItems = await resolveLineItemsWithWooPrices({ wcApi, lineItems, debugId });
-  const orderLineItems = buildRestOrderLineItems(resolvedLineItems);
+  const mxnLineItems = await resolveLineItemsWithWooMXNPrices({ wcApi, lineItems, debugId });
+  const orderLineItems = buildRestOrderLineItems(mxnLineItems);
   console.info(`[checkout:${debugId}] rest_order_input`, {
     requestedItems: lineItems.length,
     restItems: orderLineItems.length,
-    restSubtotal: getExpectedLineItemsSubtotal(resolvedLineItems),
+    restSubtotal: getExpectedLineItemsSubtotal(mxnLineItems),
     restLineItems: orderLineItems.map((item) => ({
       product_id: item.product_id,
       variation_id: item.variation_id || null,
@@ -694,7 +702,7 @@ const createUsdRestOrder = async ({
 
   const order = await syncOrderTotalWithExpectedSubtotal({
     orderId: repairedOrder.id,
-    lineItems: resolvedLineItems,
+    lineItems: mxnLineItems,
   }) || repairedOrder;
   console.info(`[checkout:${debugId}] rest_order_created`, {
     orderId: order.id,
@@ -943,7 +951,7 @@ export default async function handler(req, res) {
     }
 
     let checkedStoreOrder = null;
-    let orderTotalSyncedToStoreCurrency = false;
+    let orderTotalSyncedToMXN = false;
 
     try {
       await enforceOrderLineTotals({
@@ -954,7 +962,7 @@ export default async function handler(req, res) {
         orderId: order.order_id,
         lineItems,
       });
-      orderTotalSyncedToStoreCurrency = true;
+      orderTotalSyncedToMXN = true;
       checkedStoreOrder = null;
     } catch (lineTotalSyncError) {
       console.error('Order line total sync warning:', lineTotalSyncError);
@@ -1141,7 +1149,7 @@ export default async function handler(req, res) {
       debug_id: debugId,
     });
   } catch (error) {
-    console.error(`[checkout:${debugId}] error`, error);
+    console.error(`[checkout:${debugId}] error`, getWooCommerceErrorDetails(error));
     const isAccountError =
       /account|registration|email/i.test(String(error?.message || '')) ||
       /woocommerce_rest_checkout_invalid_customer/i.test(String(error?.code || '')) ||

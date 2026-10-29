@@ -1,4 +1,4 @@
-import { getCategories, getProducts } from "@/src/lib/woocommerce";
+import wcApi, { getWooCommerceErrorDetails } from "@/src/lib/woocommerce";
 
 /**
  * API Route pour générer le sitemap dynamique depuis WooCommerce
@@ -6,7 +6,7 @@ import { getCategories, getProducts } from "@/src/lib/woocommerce";
  */
 export default async function handler(req, res) {
   try {
-    const siteUrl = process.env.NEXT_PUBLIC_SITE_URL || 'https://dosalga.store';
+    const siteUrl = 'https://www.dosalga.store';
     const currentDate = new Date().toISOString().split('T')[0];
     const locales = ['en', 'es', 'de', 'fr', 'it', 'pt'];
     const pageSlugs = [
@@ -37,14 +37,16 @@ export default async function handler(req, res) {
     let categories = [];
 
     try {
-      products = await getProducts({
+      const productsResponse = await wcApi.get('products', {
         per_page: 100,
         status: 'publish'
       });
+      products = productsResponse.data || [];
 
-      categories = await getCategories({
+      const categoriesResponse = await wcApi.get('products/categories', {
         per_page: 100
       });
+      categories = categoriesResponse.data || [];
     } catch (error) {
       console.error('Error fetching from WooCommerce:', error.message);
       // Continue avec les pages statiques même si WooCommerce échoue
@@ -115,7 +117,7 @@ export default async function handler(req, res) {
     
     res.status(200).send(xml);
   } catch (error) {
-    console.error('Sitemap generation error:', error);
+    console.error('Sitemap generation error:', getWooCommerceErrorDetails(error));
     res.status(500).json({ error: 'Error generating sitemap' });
   }
 }

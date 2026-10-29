@@ -3,4 +3,4 @@ User-agent: *
 Allow: /
 Disallow: /api/
 
-Sitemap: https://dosalga.store/sitemap.xml
+Sitemap: https://dosalga.com/sitemap.xml

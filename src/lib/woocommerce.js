@@ -2,8 +2,33 @@ import WooCommerceRestApi from "@woocommerce/woocommerce-rest-api";
 
 const FALLBACK_KEY = "ck_962f8b4455545de9a9a6155616535fdf8d9eb1db";
 const FALLBACK_SECRET = "cs_4242ab75e9fb88408afd2961efb76b7ce9211bc9";
-const FALLBACK_WORDPRESS_URL = "https://oliviers55.sg-host.com";
+const FALLBACK_WORDPRESS_URL = "https://oliviers44.sg-host.com";
 const MAX_PRODUCTS_PER_PAGE = 100;
+const parsedTimeoutMs = Number.parseInt(process.env.WOOCOMMERCE_TIMEOUT_MS || "30000", 10);
+const requestTimeoutMs = Number.isFinite(parsedTimeoutMs) && parsedTimeoutMs > 0
+  ? parsedTimeoutMs
+  : 30000;
+
+const applicationUsername = String(process.env.WP_APPLICATION_USERNAME || "").trim();
+const applicationPassword = String(process.env.WP_APPLICATION_PASSWORD || "").replace(/\s+/g, "");
+const hasApplicationPasswordAuth = Boolean(applicationUsername && applicationPassword);
+
+export const getWooCommerceErrorDetails = (error) => ({
+  message: error?.message || "Unknown WooCommerce error",
+  code: error?.code || null,
+  status: error?.response?.status || error?.status || null,
+  endpoint: (() => {
+    try {
+      return new URL(error?.config?.url).pathname;
+    } catch {
+      return null;
+    }
+  })(),
+});
+
+const logWooCommerceError = (message, error) => {
+  console.error(message, getWooCommerceErrorDetails(error));
+};
 
 const normalizeWordPressUrl = (value) => {
   const rawUrl = String(value || "").trim();
@@ -40,38 +65,29 @@ const normalizePerPage = (value, fallback = MAX_PRODUCTS_PER_PAGE) => {
   return Math.min(parsedValue, MAX_PRODUCTS_PER_PAGE);
 };
 
-const getWordPressAppAuth = () => {
-  const username = String(process.env.WP_APP_USER || process.env.WORDPRESS_APP_USER || "").trim();
-  const password = String(process.env.WP_APP_PASSWORD || process.env.WORDPRESS_APP_PASSWORD || "").trim();
-
-  if (!username || !password) {
-    return null;
-  }
-
-  return { username, password };
-};
-
-const wordpressAppAuth = getWordPressAppAuth();
-
 const api = new WooCommerceRestApi({
   url: normalizeWordPressUrl(
     process.env.WORDPRESS_URL
     || process.env.WOOCOMMERCE_URL
     || process.env.NEXT_PUBLIC_WORDPRESS_URL
   ),
-  consumerKey: process.env.WC_CONSUMER_KEY || FALLBACK_KEY,
-  consumerSecret: process.env.WC_CONSUMER_SECRET || FALLBACK_SECRET,
+  // WooCommerce accepts WordPress Application Passwords through HTTPS Basic Auth.
+  consumerKey: hasApplicationPasswordAuth
+    ? applicationUsername
+    : process.env.WC_CONSUMER_KEY || FALLBACK_KEY,
+  consumerSecret: hasApplicationPasswordAuth
+    ? applicationPassword
+    : process.env.WC_CONSUMER_SECRET || FALLBACK_SECRET,
   version: "wc/v3",
-  // Query string auth tends à mieux passer le captcha SG qu'un Basic header
-  queryStringAuth: !wordpressAppAuth,
+  // Consumer keys can use query-string auth; application passwords must use Basic Auth.
+  queryStringAuth: !hasApplicationPasswordAuth,
   axiosConfig: {
-    ...(wordpressAppAuth ? { auth: wordpressAppAuth } : {}),
     headers: {
       'User-Agent': 'Mozilla/5.0 (X11; Linux x86_64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/119.0 Safari/537.36',
       Accept: 'application/json',
       'Content-Type': 'application/json',
     },
-    timeout: 10000,
+    timeout: requestTimeoutMs,
   }
 });
 
@@ -85,7 +101,7 @@ export const getProducts = async (params = {}) => {
     const response = await api.get("products", params);
     return response.data;
   } catch (error) {
-    console.error("Error fetching products:", error);
+    logWooCommerceError("Error fetching products:", error);
     throw error;
   }
 };
@@ -137,7 +153,7 @@ export const getAllProducts = async (params = {}) => {
 
     return [...firstPageProducts, ...remainingProducts];
   } catch (error) {
-    console.error("Error fetching all products:", error);
+    logWooCommerceError("Error fetching all products:", error);
     throw error;
   }
 };
@@ -150,7 +166,7 @@ export const getProduct = async (id) => {
     const response = await api.get(`products/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching product ${id}:`, error);
+    logWooCommerceError(`Error fetching product ${id}:`, error);
     throw error;
   }
 };
@@ -163,7 +179,7 @@ export const getCategories = async (params = {}) => {
     const response = await api.get("products/categories", params);
     return response.data;
   } catch (error) {
-    console.error("Error fetching categories:", error);
+    logWooCommerceError("Error fetching categories:", error);
     throw error;
   }
 };
@@ -176,7 +192,7 @@ export const getCategory = async (id) => {
     const response = await api.get(`products/categories/${id}`);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching category ${id}:`, error);
+    logWooCommerceError(`Error fetching category ${id}:`, error);
     throw error;
   }
 };
@@ -189,7 +205,7 @@ export const createOrder = async (orderData) => {
     const response = await api.post("orders", orderData);
     return response.data;
   } catch (error) {
-    console.error("Error creating order:", error);
+    logWooCommerceError("Error creating order:", error);
     throw error;
   }
 };
@@ -202,7 +218,7 @@ export const getOrders = async (params = {}) => {
     const response = await api.get("orders", params);
     return response.data;
   } catch (error) {
-    console.error("Error fetching orders:", error);
+    logWooCommerceError("Error fetching orders:", error);
     throw error;
   }
 };
@@ -218,7 +234,7 @@ export const searchProducts = async (searchTerm, params = {}) => {
     });
     return response.data;
   } catch (error) {
-    console.error("Error searching products:", error);
+    logWooCommerceError("Error searching products:", error);
     throw error;
   }
 };
@@ -231,7 +247,7 @@ export const getProductVariations = async (productId, params = {}) => {
     const response = await api.get(`products/${productId}/variations`, params);
     return response.data;
   } catch (error) {
-    console.error(`Error fetching variations for product ${productId}:`, error);
+    logWooCommerceError(`Error fetching variations for product ${productId}:`, error);
     throw error;
   }
 };
@@ -244,7 +260,49 @@ export const getProductReviews = async (params = {}) => {
     const response = await api.get("products/reviews", params);
     return response.data;
   } catch (error) {
-    console.error("Error fetching product reviews:", error);
+    logWooCommerceError("Error fetching product reviews:", error);
+    throw error;
+  }
+};
+
+export const getAllProductReviews = async (params = {}) => {
+  try {
+    const perPage = normalizePerPage(params.per_page);
+    const firstResponse = await api.get("products/reviews", {
+      ...params,
+      page: 1,
+      per_page: perPage,
+    });
+
+    const firstPageReviews = firstResponse.data;
+    if (!Array.isArray(firstPageReviews)) {
+      throw new Error("WooCommerce API returned an unexpected reviews payload for page 1.");
+    }
+
+    const totalPages = Number.parseInt(firstResponse.headers?.["x-wp-totalpages"] || "1", 10);
+    if (!Number.isFinite(totalPages) || totalPages <= 1) {
+      return firstPageReviews;
+    }
+
+    const remainingReviews = [];
+    for (let page = 2; page <= totalPages; page += 1) {
+      // Fetch sequentially to avoid saturating slower WordPress backends.
+      const response = await api.get("products/reviews", {
+        ...params,
+        page,
+        per_page: perPage,
+      });
+
+      if (!Array.isArray(response.data)) {
+        throw new Error(`WooCommerce API returned an unexpected reviews payload for page ${page}.`);
+      }
+
+      remainingReviews.push(...response.data);
+    }
+
+    return [...firstPageReviews, ...remainingReviews];
+  } catch (error) {
+    logWooCommerceError("Error fetching all product reviews:", error);
     throw error;
   }
 };
