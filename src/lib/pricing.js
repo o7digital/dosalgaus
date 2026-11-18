@@ -1,3 +1,5 @@
+import { STORE_CURRENCY } from './storefront.js';
+
 export const parsePriceValue = (value) => {
   const raw = String(value ?? '').trim();
   if (!raw) return null;
@@ -24,7 +26,7 @@ export const getWordPressPriceSourceCurrency = () => {
 };
 
 export const getStoreCurrency = () => {
-  return String(process.env.NEXT_PUBLIC_STORE_CURRENCY || 'MXN').trim().toUpperCase();
+  return STORE_CURRENCY;
 };
 
 export const convertUSDToMXN = (value) => {
@@ -47,7 +49,7 @@ export const getStoreLocaleFromPath = (pathname = '') => {
 };
 
 export const formatMXNPrice = (value, options = {}) => {
-  const { includeCode = true, fallback = includeCode ? '$0.00 MXN' : '$0.00' } = options;
+  const { includeCode = true, fallback = includeCode ? '$0.00 USD' : '$0.00' } = options;
   const mxn = getStoreMXNPrice(value);
 
   if (mxn === null) return fallback;

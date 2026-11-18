@@ -2,7 +2,7 @@
  * Context pour gérer le panier d'achats
  */
 import React, { createContext, useContext, useState, useEffect } from 'react';
-import { ONLINE_SALES_ENABLED } from '../lib/storefront';
+import { ONLINE_SALES_ENABLED, STORE_CURRENCY } from '../lib/storefront';
 
 const CartContext = createContext();
 const DEFAULT_COUPON_LABEL = 'Remise socios';
@@ -230,7 +230,7 @@ export const CartProvider = ({ children }) => {
       }
 
       const orderData = {
-        currency: String(process.env.NEXT_PUBLIC_STORE_CURRENCY || 'USD').trim().toUpperCase(),
+        currency: STORE_CURRENCY,
         billing: billingInfo,
         shipping: shippingInfo || billingInfo,
         customer_note: billingInfo.customer_note || '',

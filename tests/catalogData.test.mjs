@@ -1,7 +1,7 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
 import { publicCatalogProduct, applyUsPriceRegistry, markStoredUsdPrice } from '../src/lib/catalogData.mjs';
-import { getWooProductMXNPrice, normalizeWooProductPricesToMXN } from '../src/lib/pricing.js';
+import { getWooProductMXNPrice, normalizeWooProductPricesToMXN, getStoreCurrency, formatLocalizedPrice } from '../src/lib/pricing.js';
 
 process.env.NEXT_PUBLIC_STORE_CURRENCY = 'USD';
 process.env.NEXT_PUBLIC_MXN_PER_USD = '17.49';
@@ -41,4 +41,20 @@ test('cached USD values stay unchanged across repeated normalizations', () => {
 
 test('legacy unmarked values keep the existing conversion during the migration', () => {
   assert.ok(Math.abs(getWooProductMXNPrice({ price: '1749' }, '1749') - 100) < 0.000001);
+});
+
+test('US prices stay in USD with missing or incorrect currency configuration', () => {
+  const original = process.env.NEXT_PUBLIC_STORE_CURRENCY;
+  try {
+    for (const value of [undefined, 'MXN', 'EUR']) {
+      if (value === undefined) delete process.env.NEXT_PUBLIC_STORE_CURRENCY;
+      else process.env.NEXT_PUBLIC_STORE_CURRENCY = value;
+      assert.equal(getStoreCurrency(), 'USD');
+      assert.equal(formatLocalizedPrice('125.50'), '$125.50 USD');
+      assert.equal(formatLocalizedPrice(null), '$0.00 USD');
+    }
+  } finally {
+    if (original === undefined) delete process.env.NEXT_PUBLIC_STORE_CURRENCY;
+    else process.env.NEXT_PUBLIC_STORE_CURRENCY = original;
+  }
 });

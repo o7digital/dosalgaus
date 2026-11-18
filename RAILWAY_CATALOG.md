@@ -12,7 +12,11 @@ never treated as US decisions.
 
 Required server configuration: `DATABASE_URL`, `DATABASE_SSL=true`,
 `DATABASE_POOL_MAX=3`, a private `CATALOG_SYNC_SECRET` and `CRON_SECRET`. Keep
-`NEXT_PUBLIC_STORE_CURRENCY=USD`. All connection strings and sync secrets belong
+`NEXT_PUBLIC_STORE_CURRENCY=USD` for compatibility. The US currency is fixed to USD
+in `src/lib/storefront.js`; missing or incorrect environment configuration cannot
+switch the catalogue to MXN. Online sales remain disabled in that same module,
+with checkout routes redirected and the order API rejecting requests.
+All connection strings and sync secrets belong
 in local/Vercel environment configuration, never in Git.
 
 Refresh published US WooCommerce products with `POST /api/catalog/sync` and
