@@ -2,7 +2,7 @@
  * API Route: /api/categories
  * Récupère toutes les catégories depuis WooCommerce
  */
-import { getCategories, getWooCommerceErrorDetails } from '@/src/lib/woocommerce';
+import { getCatalogCategories } from '@/src/lib/catalogRepository';
 import { isHiddenCreamCategory } from '@/src/lib/productVisibility';
 import { normalizeCategoriesToEnglish, translateCategoriesToSpanish } from '@/src/lib/productText';
 
@@ -10,6 +10,8 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store, max-age=0');
   res.setHeader('CDN-Cache-Control', 'no-store');
   res.setHeader('Vercel-CDN-Cache-Control', 'no-store');
+  res.setHeader('X-Dosalga-Catalog-Source', 'railway');
+  res.setHeader('X-Dosalga-Catalog-Market', 'US');
 
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method not allowed' });
@@ -19,11 +21,11 @@ export default async function handler(req, res) {
     const { per_page = 100, hide_empty = true, lang = 'en' } = req.query;
 
     const params = {
-      per_page: parseInt(per_page),
-      hide_empty: hide_empty === 'true'
+      perPage: Math.min(Math.max(Number.parseInt(per_page, 10) || 100, 1), 100),
+      hideEmpty: hide_empty === true || hide_empty === 'true'
     };
 
-    const categories = await getCategories(params);
+    const categories = await getCatalogCategories(params);
     const filteredCategories = Array.isArray(categories)
       ? categories.filter((category) => !isHiddenCreamCategory(category))
       : [];
@@ -34,11 +36,12 @@ export default async function handler(req, res) {
     res.status(200).json({
       success: true,
       data: visibleCategories,
-      count: visibleCategories.length
+      count: visibleCategories.length,
+      source: 'railway', market: 'US',
     });
   } catch (error) {
-    console.error('Error fetching categories:', getWooCommerceErrorDetails(error));
-    res.status(500).json({ 
+    console.error('Error reading US categories:', error.message);
+    res.status(503).json({
       success: false,
       message: 'Erreur lors de la récupération des catégories',
       error: error.message 

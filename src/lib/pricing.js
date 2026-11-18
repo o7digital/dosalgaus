@@ -138,6 +138,10 @@ export const getWooProductMXNPrice = (product, value) => {
   if (numeric === null) return null;
 
   if (getStoreCurrency() === 'USD') {
+    // Prices already published in USD (including Railway snapshots) are final.
+    // Keep the historical MXN conversion only for unmarked legacy products.
+    const valueCurrency = String(getMetaValue(product, 'dosalga_price_value_currency') || product?.priceValueCurrency || '').toUpperCase();
+    if (valueCurrency === 'USD') return numeric;
     return numeric / getMXNPerUSD();
   }
 
@@ -177,9 +181,10 @@ export const normalizeWooProductPricesToMXN = (product) => {
     ...normalizedProduct,
     price_html: '',
     meta_data: [
-      ...(Array.isArray(product.meta_data) ? product.meta_data : []),
+      ...(Array.isArray(product.meta_data) ? product.meta_data : []).filter(meta => !['dosalga_price_display_currency', 'dosalga_price_value_currency'].includes(meta.key)),
       { key: 'dosalga_price_source_currency', value: isImportedMXNProduct(product) ? 'MXN' : 'USD' },
-      { key: 'dosalga_price_display_currency', value: 'MXN' },
+      { key: 'dosalga_price_display_currency', value: getStoreCurrency() },
+      { key: 'dosalga_price_value_currency', value: getStoreCurrency() },
       { key: 'dosalga_mxn_per_usd', value: String(getMXNPerUSD()) },
     ],
   };

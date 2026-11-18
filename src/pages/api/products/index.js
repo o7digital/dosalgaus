@@ -2,12 +2,7 @@
  * API Route: /api/products
  * Récupère tous les produits depuis WooCommerce
  */
-import {
-  getAllProducts,
-  getProducts,
-  getWooCommerceErrorDetails,
-} from '@/src/lib/woocommerce';
-import { normalizeWooProductsPricesToMXN } from '@/src/lib/pricing';
+import { getCatalogProducts } from '@/src/lib/catalogRepository';
 import {
   translateWooProductsDescriptionsToSpanish,
   translateWooProductsTextToEnglish,
@@ -34,6 +29,8 @@ export default async function handler(req, res) {
   res.setHeader('Cache-Control', 'no-store, max-age=0');
   res.setHeader('CDN-Cache-Control', 'no-store');
   res.setHeader('Vercel-CDN-Cache-Control', 'no-store');
+  res.setHeader('X-Dosalga-Catalog-Source', 'railway');
+  res.setHeader('X-Dosalga-Catalog-Market', 'US');
 
   if (req.method !== 'GET') {
     return res.status(405).json({ message: 'Method not allowed' });
@@ -46,6 +43,7 @@ export default async function handler(req, res) {
       limit,
       category, 
       search, 
+      sku,
       orderby = 'date', 
       order = 'desc',
       on_sale,
@@ -58,10 +56,10 @@ export default async function handler(req, res) {
     const resolvedPerPage = normalizePerPage(limit ?? per_page, fetchAllProducts ? 100 : 10);
 
     const params = {
-      per_page: resolvedPerPage,
+      perPage: resolvedPerPage,
       orderby,
       order,
-      status: 'publish',
+      all: fetchAllProducts,
     };
 
     if (!fetchAllProducts) {
@@ -71,21 +69,18 @@ export default async function handler(req, res) {
     // Ajouter les filtres optionnels
     if (category) params.category = category;
     if (search) params.search = search;
-    if (on_sale !== undefined) params.on_sale = isTrue(on_sale);
+    if (sku) params.sku = String(sku).trim();
+    if (on_sale !== undefined) params.onSale = isTrue(on_sale);
     if (featured !== undefined) params.featured = isTrue(featured);
 
-    const products = fetchAllProducts
-      ? await getAllProducts(params)
-      : await getProducts(params);
+    const products = await getCatalogProducts(params);
 
     // Guard: if upstream (SiteGround captcha) returns HTML/string, treat as error
     if (!Array.isArray(products)) {
       throw new Error('WooCommerce API returned unexpected payload (possibly captcha).');
     }
 
-    const normalizedProducts = normalizeWooProductsPricesToMXN(
-      products.filter((product) => isProductVisible(product))
-    );
+    const normalizedProducts = products.filter(isProductVisible);
     const visibleProducts = String(lang).toLowerCase() === 'es'
       ? translateWooProductsDescriptionsToSpanish(normalizedProducts)
       : translateWooProductsTextToEnglish(normalizedProducts);
@@ -95,10 +90,12 @@ export default async function handler(req, res) {
       data: visibleProducts,
       count: visibleProducts.length,
       all: fetchAllProducts,
+      source: 'railway',
+      market: 'US',
     });
   } catch (error) {
-    console.error('Error fetching products:', getWooCommerceErrorDetails(error));
-    res.status(500).json({ 
+    console.error('Error reading US Railway products:', error.message);
+    res.status(503).json({
       success: false,
       message: 'Erreur lors de la récupération des produits',
       error: error.message 

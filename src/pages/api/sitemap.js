@@ -1,4 +1,5 @@
-import wcApi, { getWooCommerceErrorDetails } from "@/src/lib/woocommerce";
+import { getCatalogProducts, getCatalogCategories } from '@/src/lib/catalogRepository';
+import { isProductVisible } from '@/src/lib/productVisibility';
 
 /**
  * API Route pour générer le sitemap dynamique depuis WooCommerce
@@ -37,16 +38,11 @@ export default async function handler(req, res) {
     let categories = [];
 
     try {
-      const productsResponse = await wcApi.get('products', {
-        per_page: 100,
-        status: 'publish'
-      });
-      products = productsResponse.data || [];
-
-      const categoriesResponse = await wcApi.get('products/categories', {
-        per_page: 100
-      });
-      categories = categoriesResponse.data || [];
+      const [catalogProducts, catalogCategories] = await Promise.all([
+        getCatalogProducts({ all: true }), getCatalogCategories({ hideEmpty: true }),
+      ]);
+      products = catalogProducts.filter(isProductVisible);
+      categories = catalogCategories;
     } catch (error) {
       console.error('Error fetching from WooCommerce:', error.message);
       // Continue avec les pages statiques même si WooCommerce échoue
@@ -83,7 +79,6 @@ export default async function handler(req, res) {
     categories.forEach(category => {
       if (category.count > 0) {
         xml += `
-  <!-- Category: ${category.name} -->
   <url>
     <loc>${siteUrl}/category/${category.slug}</loc>
     <lastmod>${currentDate}</lastmod>
@@ -98,9 +93,8 @@ export default async function handler(req, res) {
     products.forEach(product => {
       const productDate = product.date_modified || product.date_created || currentDate;
       xml += `
-  <!-- Product: ${product.name} -->
   <url>
-    <loc>${siteUrl}/shop/product/${product.slug}</loc>
+    <loc>${siteUrl}/shop/product/${product.id}</loc>
     <lastmod>${productDate.split('T')[0]}</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.5</priority>
@@ -117,7 +111,7 @@ export default async function handler(req, res) {
     
     res.status(200).send(xml);
   } catch (error) {
-    console.error('Sitemap generation error:', getWooCommerceErrorDetails(error));
+    console.error('Sitemap generation error:', error.message);
     res.status(500).json({ error: 'Error generating sitemap' });
   }
 }
